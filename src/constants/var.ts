@@ -3,6 +3,7 @@ import logo from '@/assets/images/logo.png';
 import shortlogo from '@/assets/images/short-logo.png';
 import darklogo from '@/assets/images/dark-logo.png';
 import eventbanner from '@/assets/images/event-banner.png';
+import { CSGroup, CSHome, CSMarket } from '@/components/common/iconography';
 
 export const VARIABLE_CONSTANT = {
   BACKGROUND: background,
@@ -39,3 +40,21 @@ export const SLOGAN_CONSTANT = {
     },
   ],
 };
+
+export const MENU_ARR = [
+  {
+    url: '/',
+    label: 'Newsfeed',
+    icon: CSHome,
+  },
+  {
+    url: '#',
+    label: 'Communities',
+    icon: CSGroup,
+  },
+  {
+    url: '#',
+    label: 'Marketplace',
+    icon: CSMarket,
+  },
+];
