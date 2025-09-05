@@ -11,6 +11,15 @@ import Group from '@/assets/icons/group.svg';
 import Market from '@/assets/icons/market.svg';
 import Bell from '@/assets/icons/bell.svg';
 import Magnifest from '@/assets/icons/magnifest.svg';
+import Wallet from '@/assets/icons/wallet.svg';
+import Plus from '@/assets/icons/plus.svg';
+import SpecialIcon1 from '@/assets/icons/special-icon-1.svg';
+import FlowerCheck from '@/assets/icons/flower-check.svg';
+import Block from '@/assets/icons/block.svg';
+import Pen from '@/assets/icons/pen.svg';
+import News from '@/assets/icons/news.svg';
+import Books from '@/assets/icons/books.svg';
+import Filter from '@/assets/icons/filter.svg';
 
 export const CSCircleCheck = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -19,7 +28,7 @@ export const CSCircleCheck = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSGoogleIcon = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -28,7 +37,7 @@ export const CSGoogleIcon = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSEyeOpen = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -37,7 +46,7 @@ export const CSEyeOpen = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSEyeClose = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -46,7 +55,7 @@ export const CSEyeClose = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSChatBubble = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -55,7 +64,7 @@ export const CSChatBubble = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSHome = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -64,7 +73,7 @@ export const CSHome = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSGroup = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -73,7 +82,7 @@ export const CSGroup = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSMarket = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -82,7 +91,7 @@ export const CSMarket = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSBell = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -91,7 +100,7 @@ export const CSBell = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
 );
 export const CSMagnifest = memo(
   ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
@@ -100,5 +109,86 @@ export const CSMagnifest = memo(
       style={style}
       onClick={onClick}
     />
-  ),
+  )
+);
+export const CSWallet = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <Wallet
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSPlus = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <Plus
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSSpecialIcon1 = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <SpecialIcon1
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSFlowerCheck = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <FlowerCheck
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSBlock = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <Block
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSPen = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <Pen
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSNews = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <News
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSBooks = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <Books
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
+);
+export const CSFilter = memo(
+  ({ className = '', style = {}, onClick = null }: ICON_TYPE) => (
+    <Filter
+      className={className}
+      style={style}
+      onClick={onClick}
+    />
+  )
 );

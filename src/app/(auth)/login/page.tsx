@@ -1,11 +1,9 @@
 'use client';
 
-import AuthGuard from '@/components/auth/AuthGuard';
-import LoginForm from '@/components/auth/LoginForm';
-import GoogleLogin from '@/components/auth/GoogleLogin';
 import { Img } from '@/components/common';
 import { SLOGAN_CONSTANT, VARIABLE_CONSTANT } from '@/constants';
 import { CSCircleCheck } from '@/components/common/iconography';
+import { AuthGuard, LoginForm } from '@/components';
 
 export default function LoginPage() {
   return (

@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/store/zustand/authStore';
-import Button from '../common/Button';
 import { CSEyeOpen, CSEyeClose } from '../common/iconography';
+import { Button } from '../common';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -16,7 +16,7 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export default function LoginForm() {
+export function LoginForm() {
   const [error, setError] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
   const { login, isLoading } = useAuthStore();

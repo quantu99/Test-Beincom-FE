@@ -1,8 +1,7 @@
 'use client';
 
-import AuthGuard from '@/components/auth/AuthGuard';
-import GoogleLogin from '@/components/auth/GoogleLogin';
-import SignupForm from '@/components/auth/SignUpForm';
+import { AuthGuard, GoogleLogin, SignupForm } from "@/components";
+
 
 export default function SignupPage() {
   return (

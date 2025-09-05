@@ -9,7 +9,7 @@ interface AuthGuardProps {
   requireAuth?: boolean;
 }
 
-export default function AuthGuard({
+export function AuthGuard({
   children,
   requireAuth = true,
 }: AuthGuardProps) {

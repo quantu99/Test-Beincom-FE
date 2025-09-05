@@ -1,0 +1,78 @@
+<svg width="20" height="20" fill="none"
+    xmlns="http://www.w3.org/2000/svg" class="mr-1 flex-none">
+    <g clip-path="url(#nft_comm_badge_svg__clip0_6866_8124)">
+        <path d="M4.56 6.994l5.482-1.323L10 0c-.172.002-.344.05-.5.138L1.613 4.692a1.064 1.064 0 00-.333.305L4.56 6.994z" fill="#DAC9F0"></path>
+        <path d="M4.616 6.967L1.334 4.97c-.119.171-.188.377-.191.59l-.064 8.971c-.003.228.072.447.203.624l4.172-2.848-.838-5.34z" fill="url(#nft_comm_badge_svg__paint0_linear_6866_8124)"></path>
+        <path d="M10.003 15.3l-4.546-3.005-4.172 2.85c.086.116.197.216.327.29l7.8 4.428c.194.11.416.152.633.13l-.042-4.693z" fill="url(#nft_comm_badge_svg__paint1_linear_6866_8124)"></path>
+        <path d="M18.322 15.31c.1-.058.189-.132.264-.216l-4.172-2.18-4.428 2.394.04 4.693c.14-.016.277-.06.404-.133l7.892-4.557z" fill="url(#nft_comm_badge_svg__paint2_linear_6866_8124)"></path>
+        <path d="M14.427 12.909l4.172 2.18c.161-.186.255-.425.258-.68l.064-8.968c0-.183-.044-.358-.13-.513l-4.364 2.288v5.692z" fill="url(#nft_comm_badge_svg__paint3_linear_6866_8124)"></path>
+        <path d="M18.79 4.967a1.025 1.025 0 00-.396-.402l-7.8-4.43A1.045 1.045 0 0010 0v6.577l4.427.677 4.364-2.288z" fill="url(#nft_comm_badge_svg__paint4_linear_6866_8124)"></path>
+        <path d="M9.97 17.663l-6.608-3.897-.033-7.715 6.66-3.733 6.521 3.87.034 7.83-6.575 3.645z" fill="#172943"></path>
+        <path d="M9.923 17.502l-6.35-3.747-.03-7.415 6.396-3.587 6.27 3.72.032 7.523-6.318 3.506z" fill="url(#nft_comm_badge_svg__paint5_linear_6866_8124)"></path>
+        <path d="M9.922 17.502l-6.35-3.747-.024-5.912 3.409 2.907.48-2.793 1.49 2.18.438-1.431 2.474-.749 1.101 1.037 3.276-.402.025 5.404-6.319 3.506z" fill="url(#nft_comm_badge_svg__paint6_linear_6866_8124)"></path>
+        <path d="M3.82 12.107v-4.15h.56l2.014 2.053V7.957h1.043v4.15h-.66L4.84 10.06l.025 2.047H3.82zM8.927 7.957h2.912v1.062H9.892v.808h1.656l.014 1.007h-1.67v1.273h-.965v-4.15zM12.94 7.957h3.138v1.049h-1.021v3.1H14.01l.014-3.112H12.94V7.957z" fill="#fff"></path>
+        <path opacity="0.2" d="M3.545 7.25L9.95 3.577l6.372 3.564-.114-.668-6.269-3.72L3.542 6.34l.003.91z" fill="url(#nft_comm_badge_svg__paint7_linear_6866_8124)"></path>
+        <path d="M9.952 17.721v-.094c0-.05.027-.097.072-.122l6.577-3.656v.169L9.95 17.72z" fill="url(#nft_comm_badge_svg__paint8_linear_6866_8124)"></path>
+        <path d="M10.102 17.574l-.094.147-6.657-3.9.21-.011 6.541 3.764z" fill="url(#nft_comm_badge_svg__paint9_linear_6866_8124)"></path>
+    </g>
+    <defs>
+        <linearGradient id="nft_comm_badge_svg__paint0_linear_6866_8124" x1="2.709" y1="6.408" x2="3.652" y2="18.312" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#8043CC"></stop>
+            <stop offset="0.673" stop-color="#6794EB"></stop>
+            <stop offset="0.987" stop-color="#5CB7F9"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint1_linear_6866_8124" x1="-1.438" y1="10.953" x2="9.953" y2="17.627" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#8043CC"></stop>
+            <stop offset="0.286" stop-color="#7173DE"></stop>
+            <stop offset="0.588" stop-color="#60AAF4"></stop>
+            <stop offset="0.987" stop-color="#5CB7F9"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint2_linear_6866_8124" x1="6.94" y1="18.638" x2="17.13" y2="14.47" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#32D9EB"></stop>
+            <stop offset="0.328" stop-color="#37D5ED"></stop>
+            <stop offset="0.646" stop-color="#44CAF1"></stop>
+            <stop offset="0.978" stop-color="#5AB8F8"></stop>
+            <stop offset="1" stop-color="#5CB7F9"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint3_linear_6866_8124" x1="16.674" y1="6.782" x2="16.674" y2="15.29" gradientUnits="userSpaceOnUse">
+            <stop offset="0.042" stop-color="#8144FE"></stop>
+            <stop offset="0.67" stop-color="#6794FB"></stop>
+            <stop offset="0.987" stop-color="#5CB7F9"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint4_linear_6866_8124" x1="9.145" y1="2.656" x2="17.764" y2="7.629" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#6F32BB"></stop>
+            <stop offset="0.385" stop-color="#7348C6"></stop>
+            <stop offset="0.988" stop-color="#7A6BD7"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint5_linear_6866_8124" x1="9.566" y1="3.215" x2="9.963" y2="11.631" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#9B6BD7"></stop>
+            <stop offset="0.395" stop-color="#8B54E4"></stop>
+            <stop offset="0.988" stop-color="#7331F7"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint6_linear_6866_8124" x1="3.548" y1="12.672" x2="16.241" y2="12.672" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#334C6B"></stop>
+            <stop offset="0.169" stop-color="#2E4765"></stop>
+            <stop offset="0.987" stop-color="#132742"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint7_linear_6866_8124" x1="3.541" y1="5.003" x2="16.321" y2="5.003" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#334C6B"></stop>
+            <stop offset="0.169" stop-color="#2E4765"></stop>
+            <stop offset="0.987" stop-color="#132742"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint8_linear_6866_8124" x1="6.846" y1="18.152" x2="16.649" y2="14.542" gradientUnits="userSpaceOnUse">
+            <stop offset="0.044" stop-color="#5CB7F9"></stop>
+            <stop offset="0.252" stop-color="#82C8FA"></stop>
+            <stop offset="0.758" stop-color="#DCEFFE"></stop>
+            <stop offset="0.987" stop-color="#fff"></stop>
+        </linearGradient>
+        <linearGradient id="nft_comm_badge_svg__paint9_linear_6866_8124" x1="12.487" y1="21.194" x2="-2.043" y2="7.328" gradientUnits="userSpaceOnUse">
+            <stop offset="0.035" stop-color="#FEFFFF"></stop>
+            <stop offset="0.307" stop-color="#5CB7F9"></stop>
+            <stop offset="0.659" stop-color="#6C8EE7"></stop>
+            <stop offset="1" stop-color="#7A6BD7"></stop>
+        </linearGradient>
+        <clipPath id="nft_comm_badge_svg__clip0_6866_8124">
+            <path fill="#fff" d="M0 0h20v20H0z"></path>
+        </clipPath>
+    </defs>
+</svg>

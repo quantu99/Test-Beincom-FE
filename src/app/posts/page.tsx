@@ -1,6 +1,7 @@
 'use client';
 
-import AuthGuard from '@/components/auth/AuthGuard';
+import { AuthGuard } from "@/components";
+
 
 export default function PostsPage() {
   return (

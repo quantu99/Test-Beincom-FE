@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/authStore';
 
-export default function LogoutButton() {
+export function LogoutButton() {
   const { logout, isLoading } = useAuthStore();
   const router = useRouter();
 

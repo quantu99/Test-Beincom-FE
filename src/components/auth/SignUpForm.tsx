@@ -19,7 +19,7 @@ const signupSchema = z.object({
 
 type SignupFormData = z.infer<typeof signupSchema>;
 
-export default function SignupForm() {
+export function SignupForm() {
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const { register: registerUser, isLoading } = useAuthStore();

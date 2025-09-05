@@ -18,15 +18,15 @@ declare global {
   }
 }
 
-export default function GoogleLogin() {
+export function GoogleLogin() {
   const [isLoading, setIsLoading] = useState(false);
-  const { googleLogin } = useAuthStore();
+  // const { googleLogin } = useAuthStore();
   const router = useRouter();
 
   const handleGoogleLogin = async (credential: string) => {
     try {
       setIsLoading(true);
-      await googleLogin({ credential });
+      // await googleLogin({ credential });
       router.push('/');
     } catch (error: any) {
       console.error('Google login failed:', error);
