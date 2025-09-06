@@ -36,7 +36,7 @@ export function Header() {
     return null;
   }
   return (
-    <header className="h-[3.75rem] fixed top-0 z-[9999] h-navbar w-screen gap-x-6 border-b bg-white px-6 shadow-1 flex items-center justify-center xl:gap-x-12 xl:px-12">
+    <header className="h-[3.75rem] fixed top-0 z-[99] h-navbar w-screen gap-x-6 border-b bg-white px-6 shadow-1 flex items-center justify-center xl:gap-x-12 xl:px-12">
       {/* LEFT */}
       <div className="lg:flex min-w-custom-1 max-w-custom-1 items-center gap-4 hidden">
         <Link

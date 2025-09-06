@@ -1,11 +1,15 @@
 'use client';
 
-import { Button, CSBooks, CSFilter, CSNews, CSPen, Img } from '@/components';
+import { Button, CSFilter, Img } from '@/components';
 import { VARIABLE_CONSTANT } from '@/constants';
-import { useAuthStore } from '@/store/zustand/authStore';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
+import { PostContainer } from './PostContainer';
+import { postsApi } from '@/lib/api/post';
+import { PostsQueryDto } from '@/types/post';
+import { useQuery } from '@tanstack/react-query';
+import { FilterDropdown } from './FilterDropdown';
+import { Newsfeed } from './NewsFeed';
 
 const MENU_SECTION = [
   {
@@ -21,9 +25,71 @@ const MENU_SECTION = [
     title: 'Saved',
   },
 ];
-
+export interface FilterOptions {
+  sortBy:
+    | 'createdAt'
+    | 'title'
+    | 'views'
+    | 'likes'
+    | 'comments'
+    | 'publishedAt'
+    | 'popular';
+  sortOrder: 'ASC' | 'DESC';
+  limit: number;
+}
 export function MainSection() {
   const [currentSection, setCurrentSection] = useState('following');
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+    limit: 10,
+  });
+  const {
+    data: postsData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['posts', filters],
+    queryFn: async () => {
+      const queryParams: PostsQueryDto = {
+        sortBy: filters.sortBy,
+        sortOrder: filters.sortOrder,
+        limit: filters.limit,
+        page: 1,
+      };
+
+      if (filters.sortBy === 'popular') {
+        return postsApi.getPopular(filters.limit).then((posts) => ({
+          posts,
+          total: posts.length,
+          page: 1,
+          limit: filters.limit,
+          totalPages: 1,
+        }));
+      }
+
+      return postsApi.getAll(queryParams);
+    },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+
+  const handleFilterApply = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+    setShowFilterDropdown(false);
+  };
+
+  const handleFilterReset = () => {
+    const defaultFilters: FilterOptions = {
+      sortBy: 'createdAt',
+      sortOrder: 'DESC',
+      limit: 10,
+    };
+    setFilters(defaultFilters);
+  };
+
   return (
     <section
       className="min-w-[524px] max-w-[672px] flex-1 pt-6 "
@@ -68,129 +134,34 @@ export function MainSection() {
             </div>
           ))}
         </div>
-        <Button className="flex items-center gap-2 !bg-transparent hover:!bg-transparent !px-3 !py-2">
-          <div className="size-5 [&>svg>path]:fill-neutral-40">
-            <CSFilter />
-          </div>
-          <span className="text-sm font-medium text-neutral-60">Filter</span>
-        </Button>
-      </div>
-    </section>
-  );
-}
-
-function PostContainer() {
-  const { user } = useAuthStore();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [postType, setPostType] = useState<'quick' | 'article'>('quick');
-  const [currentDraft, setCurrentDraft] = useState(null);
-
-  // Mutation để tạo draft
-  const createDraftMutation = useMutation({
-    mutationFn: postAPI.createDraft,
-    onSuccess: (draft) => {
-      setCurrentDraft(draft);
-      setIsModalOpen(true);
-    },
-    onError: (error) => {
-      toast.error('Failed to create draft');
-      console.error('Create draft error:', error);
-    },
-  });
-
-  const handleQuickPost = () => {
-    setPostType('quick');
-    createDraftMutation.mutate({
-      title: 'Untitled Post',
-      content: '',
-    });
-  };
-
-  const handleWriteArticle = () => {
-    setPostType('article');
-    createDraftMutation.mutate({
-      title: 'Untitled Article',
-      content: '',
-    });
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setCurrentDraft(null);
-  };
-
-  const handleCreateSeries = () => {
-    // TODO: Implement series creation
-    toast.info('Series creation coming soon!');
-  };
-
-  return (
-    <>
-      <div className="w-full rounded-lg bg-white p-4 flex flex-col gap-2 mb-4">
-        <div className="flex w-full items-start gap-4">
-          <div className="w-10 h-10 aspect-square">
-            <Img
-              src={user?.avatar || VARIABLE_CONSTANT.NO_AVATAR}
-              className="w-full h-full rounded-full"
-              fit="cover"
-            />
-          </div>
-          <div className="flex w-full grow flex-col justify-center">
-            <span className="font-normal text-sm text-neutral-80">
-              Welcome, <span className="font-semibold">{user?.name}</span>
-            </span>
-            <span className="text-xs font-normal text-neutral-40">
-              Share new ideas with your community!
-            </span>
-          </div>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="relative">
           <Button
-            onClick={handleQuickPost}
-            disabled={createDraftMutation.isPending}
-            className="!py-3 !px-4 min-h-6 !text-customBlue-3 text-sm font-medium flex items-center !justify-start hover:text-neutral-70 space-x-4 rounded-xl bg-neutral-1 hover:bg-neutral-2 disabled:opacity-50"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowFilterDropdown(!showFilterDropdown);
+            }}
+            className="flex items-center gap-2 !bg-transparent hover:!bg-transparent !px-3 !py-2"
           >
-            <div className="size-6 [&>svg>path]:fill-customBlue-1">
-              <CSPen />
+            <div className="size-5 [&>svg>path]:fill-neutral-40">
+              <CSFilter />
             </div>
-            <span>
-              {createDraftMutation.isPending && postType === 'quick'
-                ? 'Creating...'
-                : 'Quick Post'}
-            </span>
+            <span className="text-sm font-medium text-neutral-60">Filter</span>
           </Button>
-          <Button
-            onClick={handleWriteArticle}
-            disabled={createDraftMutation.isPending}
-            className="!py-3 !px-4 min-h-6 !text-customBlue-3 text-sm font-medium flex items-center !justify-start hover:text-neutral-70 space-x-4 rounded-xl bg-neutral-1 hover:bg-neutral-2 disabled:opacity-50"
-          >
-            <div className="size-6 [&>svg>path]:fill-customOrange-1">
-              <CSNews />
-            </div>
-            <span>
-              {createDraftMutation.isPending && postType === 'article'
-                ? 'Creating...'
-                : 'Write Article'}
-            </span>
-          </Button>
-          <Button
-            onClick={handleCreateSeries}
-            className="!py-3 !px-4 min-h-6 !text-customBlue-3 text-sm font-medium flex items-center !justify-start hover:text-neutral-70 space-x-4 rounded-xl bg-neutral-1 hover:bg-neutral-2"
-          >
-            <div className="size-6 [&>svg>path]:fill-customGreen-1">
-              <CSBooks />
-            </div>
-            <span>Create Series</span>
-          </Button>
+          <FilterDropdown
+            isOpen={showFilterDropdown}
+            onClose={() => setShowFilterDropdown(false)}
+            filters={filters}
+            onApply={handleFilterApply}
+            onReset={handleFilterReset}
+          />
         </div>
       </div>
-
-      <CreatePostModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        draft={currentDraft}
-        postType={postType}
+      {/* NEWSFEED SECTION */}
+      <Newsfeed
+        posts={postsData?.posts || []}
+        isLoading={isLoading}
+        error={error}
       />
-    </>
+    </section>
   );
 }

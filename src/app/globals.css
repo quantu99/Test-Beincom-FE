@@ -8,6 +8,9 @@
 body {
   color: black;
   background: #eaedf2;
+  height: auto;
+  overflow-y: auto;
+  min-height: 100vh;
 }
 
 .linear-text {

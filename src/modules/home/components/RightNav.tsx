@@ -103,7 +103,7 @@ export function RightNav() {
         <div className="relative flex flex-col gap-2">
           {DUMMY_MENU_ARR.map((menu) => (
             <div key={menu.id}>
-              <div className="p-2 text-base font-semibold text-neutral-60">
+              <div className="p-2 text-base font-semibold text-neutral-60 select-none">
                 {menu.title}
               </div>
 
@@ -123,7 +123,7 @@ export function RightNav() {
                       }`}
                     ></span>
                     <span className="absolute left-0 top-1/2 w-3 border-t border-neutral-300"></span>
-                    <span className="line-clamp-1 w-full break-all text-sm font-normal text-neutral-60 hover:underline">
+                    <span className="line-clamp-1 w-full break-all text-sm font-normal text-neutral-60 hover:underline cursor-pointer">
                       {child.title}
                     </span>
                   </li>
