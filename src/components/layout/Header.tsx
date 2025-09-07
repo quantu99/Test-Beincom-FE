@@ -61,23 +61,15 @@ function SearchDropdown({
               <button
                 key={`${suggestion.type}-${suggestion.id}`}
                 className="w-full p-3 hover:bg-neutral-2 flex items-center gap-3 text-left border-b border-neutral-5 last:border-b-0"
-                onClick={() => onSelect(suggestion)}
+                // onClick={() => onSelect(suggestion)}
               >
                 <div className="w-8 h-8 rounded-full bg-neutral-5 flex items-center justify-center overflow-hidden flex-shrink-0">
-                  {suggestion.avatar ? (
-                    <Img
-                      src={suggestion.avatar}
-                      className="w-full h-full"
-                      fit="cover"
-                      alt={suggestion.title}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-                      <span className="text-xs font-medium text-neutral-60">
-                        {suggestion.title.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
+                  <Img
+                    src={suggestion.avatar || VARIABLE_CONSTANT.NO_AVATAR}
+                    className="w-full h-full rounded-full"
+                    fit="cover"
+                    alt={suggestion.title}
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm text-neutral-60 truncate">
