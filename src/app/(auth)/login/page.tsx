@@ -1,5 +1,3 @@
-'use client';
-
 import { Img } from '@/components/common';
 import { SLOGAN_CONSTANT, VARIABLE_CONSTANT } from '@/constants';
 import { CSCircleCheck } from '@/components/common/iconography';

@@ -46,7 +46,7 @@ function SearchFilters({
 
   const handleOptionSelect = (callback: () => void) => {
     callback();
-    if (onClose) onClose(); 
+    if (onClose) onClose();
   };
 
   return (
@@ -54,7 +54,9 @@ function SearchFilters({
       <div className="hidden lg:block w-64 bg-white border-r border-neutral-5 h-full overflow-y-auto">
         <div className="p-4 xl:p-6 space-y-6">
           <div>
-            <h3 className="font-semibold text-neutral-60 mb-3">Filter by type</h3>
+            <h3 className="font-semibold text-neutral-60 mb-3">
+              Filter by type
+            </h3>
             <div className="space-y-2">
               {filterOptions.map((option) => (
                 <Button
@@ -143,12 +145,16 @@ function SearchFilters({
 
             <div className="p-4 space-y-6">
               <div>
-                <h3 className="font-semibold text-neutral-60 mb-3">Filter by type</h3>
+                <h3 className="font-semibold text-neutral-60 mb-3">
+                  Filter by type
+                </h3>
                 <div className="space-y-2">
                   {filterOptions.map((option) => (
                     <Button
                       key={option.value}
-                      onClick={() => handleOptionSelect(() => onTypeChange(option.value))}
+                      onClick={() =>
+                        handleOptionSelect(() => onTypeChange(option.value))
+                      }
                       className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${
                         activeType === option.value
                           ? '!bg-customPurple-4 !text-neutral-2'
@@ -167,7 +173,9 @@ function SearchFilters({
                   {sortOptions.map((option) => (
                     <Button
                       key={option.value}
-                      onClick={() => handleOptionSelect(() => onSortChange(option.value))}
+                      onClick={() =>
+                        handleOptionSelect(() => onSortChange(option.value))
+                      }
                       className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${
                         sortBy === option.value
                           ? '!bg-customPurple-4 !text-neutral-2'
@@ -185,7 +193,9 @@ function SearchFilters({
                   <h3 className="font-semibold text-neutral-60 mb-3">Order</h3>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => handleOptionSelect(() => onSortOrderChange('DESC'))}
+                      onClick={() =>
+                        handleOptionSelect(() => onSortOrderChange('DESC'))
+                      }
                       className={`flex-1 p-3 rounded-lg text-sm font-medium transition-colors ${
                         sortOrder === 'DESC'
                           ? 'bg-purple-50 text-white'
@@ -195,7 +205,9 @@ function SearchFilters({
                       Newest
                     </button>
                     <button
-                      onClick={() => handleOptionSelect(() => onSortOrderChange('ASC'))}
+                      onClick={() =>
+                        handleOptionSelect(() => onSortOrderChange('ASC'))
+                      }
                       className={`flex-1 p-3 rounded-lg text-sm font-medium transition-colors ${
                         sortOrder === 'ASC'
                           ? 'bg-purple-50 text-white'
@@ -237,8 +249,12 @@ function UserResult({ result }: { result: SearchResult }) {
           />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-neutral-60 mb-1 truncate">{result.title}</h3>
-          <p className="text-sm text-neutral-40 line-clamp-2 sm:line-clamp-1">{result.excerpt}</p>
+          <h3 className="font-semibold text-neutral-60 mb-1 truncate">
+            {result.title}
+          </h3>
+          <p className="text-sm text-neutral-40 line-clamp-2 sm:line-clamp-1">
+            {result.excerpt}
+          </p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mt-2">
             <span className="inline-flex items-center gap-1 text-xs text-neutral-40">
               User
@@ -301,11 +317,13 @@ function PostResult({ result }: { result: SearchResult }) {
                 {result.author?.name}
               </span>
             </div>
-            
+
             <div className="flex items-center gap-3 sm:gap-4 text-neutral-30">
               <span>{new Date(result.createdAt).toLocaleDateString()}</span>
               <span>{result.likes || 0} likes</span>
-              <span className="hidden sm:inline">{result.views || 0} views</span>
+              <span className="hidden sm:inline">
+                {result.views || 0} views
+              </span>
             </div>
           </div>
         </div>
@@ -325,7 +343,8 @@ function SearchPagination({
 }) {
   const getPageNumbers = () => {
     const pages = [];
-    const showPages = window.innerWidth < 640 ? 3 : 5; 
+    const showPages =
+      typeof window !== 'undefined' && window.innerWidth < 640 ? 3 : 5;
     let start = Math.max(1, currentPage - Math.floor(showPages / 2));
     let end = Math.min(totalPages, start + showPages - 1);
 
@@ -382,7 +401,10 @@ function SearchLoading() {
   return (
     <div className="space-y-4 sm:space-y-6">
       {Array.from({ length: 3 }).map((_, index) => (
-        <div key={index} className="p-4 sm:p-6 border-b border-neutral-5">
+        <div
+          key={index}
+          className="p-4 sm:p-6 border-b border-neutral-5"
+        >
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="w-full sm:w-12 h-32 sm:h-12 bg-neutral-5 rounded-full sm:rounded-full animate-pulse flex-shrink-0" />
             <div className="flex-1 space-y-3">
@@ -422,7 +444,7 @@ function MobileFilterButton({
           Filter & Sort
         </button>
       </div>
-      
+
       {/* Active filters display */}
       <div className="flex flex-wrap gap-2">
         {activeType !== 'all' && (
@@ -538,8 +560,12 @@ export function Search() {
                 Search results for &quot;{query}&quot;
               </h1>
               <p className="text-neutral-40 mt-1 text-sm sm:text-base">
-                <span className="sm:hidden">{totalResults.toLocaleString()} results</span>
-                <span className="hidden sm:inline">{totalResults.toLocaleString()} results found</span>
+                <span className="sm:hidden">
+                  {totalResults.toLocaleString()} results
+                </span>
+                <span className="hidden sm:inline">
+                  {totalResults.toLocaleString()} results found
+                </span>
               </p>
             </div>
           )}
@@ -575,9 +601,15 @@ export function Search() {
               <div>
                 {results.map((result) =>
                   result.type === 'user' ? (
-                    <UserResult key={`user-${result.id}`} result={result} />
+                    <UserResult
+                      key={`user-${result.id}`}
+                      result={result}
+                    />
                   ) : (
-                    <PostResult key={`post-${result.id}`} result={result} />
+                    <PostResult
+                      key={`post-${result.id}`}
+                      result={result}
+                    />
                   ),
                 )}
               </div>
