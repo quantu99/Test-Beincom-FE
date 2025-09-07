@@ -1,5 +1,3 @@
-'use client';
-
 import { AuthGuard } from '@/components';
 
 export const metadata = {
