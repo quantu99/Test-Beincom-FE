@@ -1,7 +1,9 @@
-import { Search } from "@/modules";
+import { Search } from '@/modules';
 
-export default function SearchPage () {
-    return <div>
-        <Search />
+export default function SearchPage() {
+  return (
+    <div>
+      <Search />
     </div>
+  );
 }
