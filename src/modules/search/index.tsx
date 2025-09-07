@@ -341,18 +341,11 @@ function SearchPagination({
   totalPages: number;
   onPageChange: (page: number) => void;
 }) {
-  const [isClient, setIsClient] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(1024); // Default to desktop
-
+  const [windowWidth, setWindowWidth] = useState(1024);
   useEffect(() => {
-    setIsClient(true);
     if (typeof window !== 'undefined') {
-      setWindowWidth(window.innerWidth);
-      
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth);
-      };
-
+      const handleResize = () => setWindowWidth(window.innerWidth);
+      handleResize();
       window.addEventListener('resize', handleResize);
       return () => window.removeEventListener('resize', handleResize);
     }
