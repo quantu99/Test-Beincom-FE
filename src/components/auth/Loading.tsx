@@ -20,7 +20,6 @@ function ThreeSceneComponent({ containerRef }: { containerRef: React.RefObject<H
   useEffect(() => {
     if (!containerRef.current || typeof window === 'undefined') return;
 
-    // Dynamic import Three.js only on client side
     import('three').then((THREE) => {
       const scene = new THREE.Scene();
       sceneRef.current = scene;
@@ -284,8 +283,10 @@ export function Loading() {
         </motion.h1>
       </motion.div>
 
-      {/* Three.js 3D scene container */}
-      <div ref={containerRef} className="absolute inset-0 pointer-events-none opacity-30" />
+      {/* Three.js 3D scene container - only render on client */}
+      {typeof window !== 'undefined' && (
+        <div ref={containerRef} className="absolute inset-0 pointer-events-none opacity-30" />
+      )}
 
       <motion.div
         className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-center"
@@ -354,7 +355,8 @@ export function Loading() {
         />
       </div>
 
-      <ThreeScene containerRef={containerRef} />
+      {/* Only render ThreeScene on client side */}
+      {typeof window !== 'undefined' && <ThreeScene containerRef={containerRef} />}
     </motion.div>
   );
 }

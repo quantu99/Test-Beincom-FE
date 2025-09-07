@@ -1,5 +1,23 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import Cookies from 'js-cookie';
+
+const getCookie = (name: string): string | undefined => {
+  if (typeof window === 'undefined') {
+    return undefined;
+  }
+  
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift();
+  }
+  return undefined;
+};
+
+const removeCookie = (name: string): void => {
+  if (typeof window === 'undefined') return;
+  
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
 
 class ApiClient {
   private client: AxiosInstance;
@@ -15,7 +33,7 @@ class ApiClient {
 
     this.client.interceptors.request.use(
       (config) => {
-        const token = Cookies.get('token');
+        const token = getCookie('token');
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -30,9 +48,12 @@ class ApiClient {
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          Cookies.remove('token');
-          Cookies.remove('refreshToken');
-          window.location.href = '/login';
+          removeCookie('token');
+          removeCookie('refreshToken');
+          
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login';
+          }
         }
         return Promise.reject(error);
       }
@@ -61,6 +82,7 @@ class ApiClient {
     const response = await this.client.put<T>(url, data, config);
     return response.data;
   }
+  
   async patch<T>(
     url: string,
     data?: any,

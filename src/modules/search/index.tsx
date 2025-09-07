@@ -342,14 +342,25 @@ function SearchPagination({
   onPageChange: (page: number) => void;
 }) {
   const [isClient, setIsClient] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(1024); // Default to desktop
 
   useEffect(() => {
     setIsClient(true);
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+      
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
+
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
 
   const getPageNumbers = () => {
     const pages = [];
-    const showPages = isClient && window.innerWidth < 640 ? 3 : 5;
+    const showPages = windowWidth < 640 ? 3 : 5;
     let start = Math.max(1, currentPage - Math.floor(showPages / 2));
     let end = Math.min(totalPages, start + showPages - 1);
 
