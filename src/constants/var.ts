@@ -8,6 +8,7 @@ import eventbanner3 from '@/assets/images/event-banner-3.webp';
 import noavatar from '@/assets/images/default-avatar.png';
 import shortlogo2 from '@/assets/images/short-logo-2.png';
 import medal from '@/assets/images/medal.png';
+import like from '@/assets/images/like.png';
 import { CSGroup, CSHome, CSMarket } from '@/components/common/iconography';
 
 export const VARIABLE_CONSTANT = {
@@ -21,6 +22,7 @@ export const VARIABLE_CONSTANT = {
   NO_AVATAR: noavatar,
   SHORT_LOGO_2: shortlogo2,
   MEDAL: medal,
+  LIKE: like,
 };
 
 export const SLOGAN_CONSTANT = {

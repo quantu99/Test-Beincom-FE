@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/store/zustand/authStore';
+import { CSEyeOpen, CSEyeClose } from '../common/iconography';
+import { Button } from '../common';
 
 const signupSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -22,6 +24,8 @@ type SignupFormData = z.infer<typeof signupSchema>;
 export function SignupForm() {
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { register: registerUser, isLoading } = useAuthStore();
   const router = useRouter();
 
@@ -53,146 +57,144 @@ export function SignupForm() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-      <h1>Sign Up</h1>
-      
+    <div className="flex w-full flex-col px-6 xs:px-12 flex-1 space-y-4">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            type="email"
-            {...register('email')}
-            style={{
-              width: '100%',
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          />
-          {errors.email && (
-            <span style={{ color: 'red', fontSize: '14px' }}>
-              {errors.email.message}
-            </span>
-          )}
+        <div className="flex flex-col gap-4">
+          {/* Email */}
+          <div className="space-y-1">
+            <label
+              className="text-sm font-medium peer-disabled:cursor-not-allowed text-neutral-40"
+              htmlFor="email"
+            >
+              Email:
+            </label>
+            <div className={`relative flex h-10 cursor-text items-center justify-between rounded-md border bg-white px-3 py-2 text-base focus-within:border-purple-50 focus-within:shadow-active hover:shadow-hover focus-within:hover:shadow-active w-full focus:border-purple-50 focus:shadow-active focus-visible:border-purple-50 focus-visible:shadow-active ${errors.email ? 'border-red-50' : 'border-gray-30'}`}>
+              <input
+                className="block w-full h-full text-base font-normal text-neutral-60 caret-neutral-60 placeholder:text-base placeholder:font-normal placeholder:text-neutral-20 autofill:!bg-gray-5 autofill:!text-neutral-60 read-only:cursor-default read-only:bg-gray-5 focus-visible:outline-none disabled:bg-gray-5 disabled:font-normal disabled:text-neutral-20"
+                id="email"
+                type="email"
+                {...register('email')}
+              />
+            </div>
+            {errors.email && (
+              <span className="text-red-50 text-sm">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
+
+          {/* Full Name */}
+          <div className="space-y-1">
+            <label
+              className="text-sm font-medium peer-disabled:cursor-not-allowed text-neutral-40"
+              htmlFor="name"
+            >
+              Full Name:
+            </label>
+            <div className={`relative flex h-10 cursor-text items-center justify-between rounded-md border bg-white px-3 py-2 text-base focus-within:border-purple-50 focus-within:shadow-active hover:shadow-hover focus-within:hover:shadow-active w-full focus:border-purple-50 focus:shadow-active focus-visible:border-purple-50 focus-visible:shadow-active ${errors.name ? 'border-red-50' : 'border-gray-30'}`}>
+              <input
+                className="block w-full h-full text-base font-normal text-neutral-60 caret-neutral-60 placeholder:text-base placeholder:font-normal placeholder:text-neutral-20 autofill:!bg-gray-5 autofill:!text-neutral-60 read-only:cursor-default read-only:bg-gray-5 focus-visible:outline-none disabled:bg-gray-5 disabled:font-normal disabled:text-neutral-20"
+                id="name"
+                type="text"
+                {...register('name')}
+              />
+            </div>
+            {errors.name && (
+              <span className="text-red-50 text-sm">
+                {errors.name.message}
+              </span>
+            )}
+          </div>
+
+          {/* Password */}
+          <div className="space-y-1">
+            <label
+              className="text-sm font-medium peer-disabled:cursor-not-allowed text-neutral-40"
+              htmlFor="password"
+            >
+              Password:
+            </label>
+            <div className={`relative flex h-10 cursor-text items-center justify-between rounded-md border bg-white px-3 py-2 text-base focus-within:border-purple-50 focus-within:shadow-active hover:shadow-hover focus-within:hover:shadow-active w-full focus:border-purple-50 focus:shadow-active focus-visible:border-purple-50 focus-visible:shadow-active ${errors.password ? 'border-red-50' : 'border-gray-30'}`}>
+              <input
+                className="block w-full h-full text-base font-normal text-neutral-60 caret-neutral-60 placeholder:text-base placeholder:font-normal placeholder:text-neutral-20 autofill:!bg-gray-5 autofill:!text-neutral-60 read-only:cursor-default read-only:bg-gray-5 focus-visible:outline-none disabled:bg-gray-5 disabled:font-normal disabled:text-neutral-20"
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                {...register('password')}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center [&>svg>path]:fill-neutral-40"
+              >
+                {showPassword ? <CSEyeClose /> : <CSEyeOpen />}
+              </button>
+            </div>
+            {errors.password && (
+              <span className="text-red-50 text-sm">
+                {errors.password.message}
+              </span>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="space-y-1">
+            <label
+              className="text-sm font-medium peer-disabled:cursor-not-allowed text-neutral-40"
+              htmlFor="confirmPassword"
+            >
+              Confirm Password:
+            </label>
+            <div className={`relative flex h-10 cursor-text items-center justify-between rounded-md border bg-white px-3 py-2 text-base focus-within:border-purple-50 focus-within:shadow-active hover:shadow-hover focus-within:hover:shadow-active w-full focus:border-purple-50 focus:shadow-active focus-visible:border-purple-50 focus-visible:shadow-active ${errors.confirmPassword ? 'border-red-50' : 'border-gray-30'}`}>
+              <input
+                className="block w-full h-full text-base font-normal text-neutral-60 caret-neutral-60 placeholder:text-base placeholder:font-normal placeholder:text-neutral-20 autofill:!bg-gray-5 autofill:!text-neutral-60 read-only:cursor-default read-only:bg-gray-5 focus-visible:outline-none disabled:bg-gray-5 disabled:font-normal disabled:text-neutral-20"
+                id="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                {...register('confirmPassword')}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center [&>svg>path]:fill-neutral-40"
+              >
+                {showConfirmPassword ? <CSEyeClose /> : <CSEyeOpen />}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <span className="text-red-50 text-sm">
+                {errors.confirmPassword.message}
+              </span>
+            )}
+          </div>
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="name">Full Name:</label>
-          <input
-            id="name"
-            type="text"
-            {...register('name')}
-            style={{
-              width: '100%',
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          />
-          {errors.name && (
-            <span style={{ color: 'red', fontSize: '14px' }}>
-              {errors.name.message}
-            </span>
-          )}
-        </div>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="password">Password:</label>
-          <input
-            id="password"
-            type="password"
-            {...register('password')}
-            style={{
-              width: '100%',
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          />
-          {errors.password && (
-            <span style={{ color: 'red', fontSize: '14px' }}>
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            {...register('confirmPassword')}
-            style={{
-              width: '100%',
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          />
-          {errors.confirmPassword && (
-            <span style={{ color: 'red', fontSize: '14px' }}>
-              {errors.confirmPassword.message}
-            </span>
-          )}
-        </div>
-
+        {/* Error Message */}
         {error && (
-          <div style={{ 
-            color: 'red', 
-            marginBottom: '15px',
-            padding: '8px',
-            border: '1px solid red',
-            borderRadius: '4px',
-            backgroundColor: '#ffebee'
-          }}>
+          <div className="mt-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
             {error}
           </div>
         )}
 
+        {/* Success Message */}
         {success && (
-          <div style={{ 
-            color: 'green', 
-            marginBottom: '15px',
-            padding: '8px',
-            border: '1px solid green',
-            borderRadius: '4px',
-            backgroundColor: '#e8f5e8'
-          }}>
+          <div className="mt-4 p-3 text-sm text-green-600 bg-green-50 border border-green-200 rounded-md">
             {success}
           </div>
         )}
 
-        <button
+        <Button
+          className="w-full rounded-md bg-customPurple-1 hover:bg-customPurple-2 transition-colors color-white mt-4"
           type="submit"
           disabled={isLoading}
-          style={{
-            width: '100%',
-            padding: '10px',
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            opacity: isLoading ? 0.6 : 1,
-          }}
         >
-          {isLoading ? 'Signing up...' : 'Sign Up'}
-        </button>
+          <span className="text-white text-base font-medium">
+            {isLoading ? 'Creating account...' : 'Sign Up'}
+          </span>
+        </Button>
       </form>
 
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+      <div className='flex flex-col text-sm items-center pb-6'>
         <p>Already have an account?</p>
-        <button
-          onClick={() => router.push('/login')}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: '#007bff',
-            textDecoration: 'underline',
-            cursor: 'pointer',
-          }}
-        >
+        <button className='hover:underline text-customPurple-4' onClick={() => router.push('/login')}>
           Login here
         </button>
       </div>

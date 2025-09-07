@@ -1,12 +1,5 @@
-"use client";
-import {
-  Button,
-  CreatePostModal,
-  CSBooks,
-  CSNews,
-  CSPen,
-  Img,
-} from '@/components';
+'use client';
+import { Button, CreatePostModal, CSNews, CSPen, Img } from '@/components';
 import { VARIABLE_CONSTANT } from '@/constants';
 import { postsApi } from '@/lib/api/post';
 import { useAuthStore } from '@/store/zustand/authStore';
@@ -30,10 +23,6 @@ export function PostContainer() {
       alert('Có lỗi xảy ra khi tạo draft. Vui lòng thử lại.');
     },
   });
-
-  const handleShowModal = () => {
-    setIsShowModal(true);
-  };
 
   const handleCloseModal = () => {
     setIsShowModal(false);
@@ -83,26 +72,29 @@ export function PostContainer() {
                 <CSPen />
               )}
             </div>
-            <span>
+            <span className="whitespace-nowrap">
               {createQuickDraftMutation.isPending
                 ? 'Creating...'
                 : 'Quick Post'}
             </span>
           </Button>
           <Button
-            onClick={handleShowModal}
+            onClick={handleQuickPost}
             className="!py-3 !px-4 min-h-6 !text-customBlue-3 text-sm font-medium flex items-center !justify-start hover:text-neutral-70 space-x-4 rounded-xl bg-neutral-1 hover:bg-neutral-2 disabled:opacity-50"
           >
             <div className="size-6 [&>svg>path]:fill-customOrange-1">
-              <CSNews />
+              {createQuickDraftMutation.isPending ? (
+                <div className="w-4 h-4 border-2 border-customBlue-1 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <CSNews />
+              )}
             </div>
-            <span>Write Article</span>
-          </Button>
-          <Button className="!py-3 !px-4 min-h-6 !text-customBlue-3 text-sm font-medium flex items-center !justify-start hover:text-neutral-70 space-x-4 rounded-xl bg-neutral-1 hover:bg-neutral-2">
-            <div className="size-6 [&>svg>path]:fill-customGreen-1">
-              <CSBooks />
-            </div>
-            <span>Create Series</span>
+            <span className="whitespace-nowrap">
+              {' '}
+              {createQuickDraftMutation.isPending
+                ? 'Creating...'
+                : 'Write Article'}
+            </span>
           </Button>
         </div>
       </div>

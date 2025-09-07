@@ -3,6 +3,7 @@
 import { useEffect, ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/zustand/authStore';
+import { Loading } from './Loading';
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -38,16 +39,7 @@ export function AuthGuard({
 
   if (isLoading || !hasCheckedAuth) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-        }}
-      >
-        <div>Loading...</div>
-      </div>
+     <Loading />
     );
   }
 

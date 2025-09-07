@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface FilterOptions {
   sortBy:
@@ -27,51 +27,41 @@ interface FilterDropdownProps {
 const SORT_OPTIONS = [
   {
     value: 'popular',
-    label: 'Phổ biến nhất',
+    label: 'Most popular',
     description: 'Sắp xếp theo độ phổ biến',
   },
   {
     value: 'createdAt',
-    label: 'Mới nhất',
+    label: 'Newest',
     description: 'Sắp xếp theo thời gian tạo',
   },
   {
     value: 'publishedAt',
-    label: 'Xuất bản mới nhất',
+    label: 'Newest publish',
     description: 'Sắp xếp theo thời gian xuất bản',
   },
   {
     value: 'likes',
-    label: 'Nhiều lượt thích',
+    label: 'Most liked',
     description: 'Sắp xếp theo số lượt thích',
   },
   {
     value: 'views',
-    label: 'Nhiều lượt xem',
+    label: 'Most view',
     description: 'Sắp xếp theo số lượt xem',
   },
   {
     value: 'comments',
-    label: 'Nhiều bình luận',
+    label: 'Most comments',
     description: 'Sắp xếp theo số bình luận',
   },
-  {
-    value: 'title',
-    label: 'Theo tiêu đề',
-    description: 'Sắp xếp theo bảng chữ cái',
-  },
-] as const;
-
-const SORT_ORDER_OPTIONS = [
-  { value: 'DESC', label: 'Giảm dần' },
-  { value: 'ASC', label: 'Tăng dần' },
 ] as const;
 
 const LIMIT_OPTIONS = [
-  { value: 5, label: '5 bài viết' },
-  { value: 10, label: '10 bài viết' },
-  { value: 20, label: '20 bài viết' },
-  { value: 50, label: '50 bài viết' },
+  { value: 5, label: '5 posts' },
+  { value: 10, label: '10 posts' },
+  { value: 20, label: '20 posts' },
+  { value: 50, label: '50 posts' },
 ] as const;
 
 export function FilterDropdown({
@@ -82,52 +72,10 @@ export function FilterDropdown({
   onReset,
 }: FilterDropdownProps) {
   const [localFilters, setLocalFilters] = useState<FilterOptions>(filters);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<
-    'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
-  >('bottom-right');
 
   useEffect(() => {
     setLocalFilters(filters);
   }, [filters]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    if (isOpen && dropdownRef.current) {
-      const rect = dropdownRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const windowWidth = window.innerWidth;
-
-      let newPosition: typeof position = 'bottom-right';
-
-      if (rect.bottom > windowHeight - 20) {
-        newPosition = rect.right > windowWidth / 2 ? 'top-right' : 'top-left';
-      } else {
-        newPosition =
-          rect.right > windowWidth / 2 ? 'bottom-right' : 'bottom-left';
-      }
-
-      setPosition(newPosition);
-    }
-  }, [isOpen]);
 
   const handleApply = () => {
     onApply(localFilters);
@@ -145,28 +93,11 @@ export function FilterDropdown({
 
   if (!isOpen) return null;
 
-  const getPositionClasses = () => {
-    switch (position) {
-      case 'top-left':
-        return 'bottom-full left-0 mb-2';
-      case 'top-right':
-        return 'bottom-full right-0 mb-2';
-      case 'bottom-left':
-        return 'top-full left-0 mt-2';
-      case 'bottom-right':
-      default:
-        return 'top-full right-0 mt-2';
-    }
-  };
-
   return (
-    <div
-      ref={dropdownRef}
-      className={`absolute z-50 ${getPositionClasses()}`}
-    >
+    <div className="absolute top-full right-0 mt-2 z-50">
       <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 w-80 max-h-96 overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Bộ lọc</h3>
+          <h3 className="text-base font-semibold text-gray-900">Filter</h3>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -186,9 +117,7 @@ export function FilterDropdown({
         </div>
 
         <div className="mb-6">
-          <h4 className="text-sm font-medium text-gray-700 mb-3">
-            Sắp xếp theo
-          </h4>
+          <h4 className="text-sm font-medium text-gray-700 mb-3">Sort by</h4>
           <div className="space-y-2">
             {SORT_OPTIONS.map((option) => (
               <label
@@ -212,49 +141,14 @@ export function FilterDropdown({
                   <span className="text-sm font-medium text-gray-900">
                     {option.label}
                   </span>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {option.description}
-                  </p>
                 </div>
               </label>
             ))}
           </div>
         </div>
-
-        {localFilters.sortBy !== 'popular' && (
-          <div className="mb-6">
-            <h4 className="text-sm font-medium text-gray-700 mb-3">Thứ tự</h4>
-            <div className="space-y-2">
-              {SORT_ORDER_OPTIONS.map((option) => (
-                <label
-                  key={option.value}
-                  className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors"
-                >
-                  <input
-                    type="radio"
-                    name="sortOrder"
-                    value={option.value}
-                    checked={localFilters.sortOrder === option.value}
-                    onChange={(e) =>
-                      setLocalFilters({
-                        ...localFilters,
-                        sortOrder: e.target.value as FilterOptions['sortOrder'],
-                      })
-                    }
-                    className="w-4 h-4 text-customPurple-1 border-gray-300 focus:ring-customPurple-1 focus:ring-2"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    {option.label}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div className="mb-6">
           <h4 className="text-sm font-medium text-gray-700 mb-3">
-            Số lượng hiển thị
+            Quantity displayed
           </h4>
           <div className="space-y-2">
             {LIMIT_OPTIONS.map((option) => (
@@ -288,13 +182,13 @@ export function FilterDropdown({
             onClick={handleReset}
             className="flex-1 !bg-gray-100 hover:!bg-gray-200 !text-gray-700 !py-2 !px-4 text-sm font-medium"
           >
-            Đặt lại
+            Reset
           </Button>
           <Button
             onClick={handleApply}
             className="flex-1 !bg-customPurple-1 hover:!bg-customPurple-1/90 text-white !py-2 !px-4 text-sm font-medium"
           >
-            Áp dụng
+            Apply
           </Button>
         </div>
       </div>

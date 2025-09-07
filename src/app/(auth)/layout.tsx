@@ -8,7 +8,7 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="min-h-[100vh] max-w-full p-8 flex items-center justify-center">
+    <div className="max-w-full p-8 flex items-center justify-center">
       <div className="fixed -z-10 inset-0">
         <Img
           src={VARIABLE_CONSTANT.BACKGROUND}

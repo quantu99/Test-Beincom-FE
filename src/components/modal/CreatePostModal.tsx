@@ -624,6 +624,7 @@ export function CreatePostModal({
                   </div>
                   <input
                     ref={fileInputRef}
+                    id="featuredImage"
                     type="file"
                     accept="image/*"
                     onChange={handleImageSelect}
@@ -1038,7 +1039,6 @@ export function CreatePostModal({
           color: #8043cc !important;
         }
       `}</style>
-      ;
       <ConfirmModal
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}

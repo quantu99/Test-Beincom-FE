@@ -99,9 +99,9 @@ export function LoginForm() {
         </Button>
       </form>
 
-      <div>
+      <div className='flex flex-col text-sm items-center pb-6'>
         <p>Don&apos;t have an account?</p>
-        <button onClick={() => router.push('/signup')}>Sign up here</button>
+        <button className='hover:underline text-customPurple-4' onClick={() => router.push('/signup')}>Sign up here</button>
       </div>
     </div>
   );

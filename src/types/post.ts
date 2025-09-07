@@ -1,16 +1,12 @@
 import { User } from './auth';
+import { Comment } from './comment';
 
 export enum PostStatus {
   DRAFT = 'draft',
   PUBLISHED = 'published',
 }
 
-export interface Comment {
-  id: string;
-  content: string;
-  author: User;
-  createdAt: string;
-}
+
 
 export interface Post {
   id: string;

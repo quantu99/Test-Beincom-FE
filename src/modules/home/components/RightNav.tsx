@@ -9,7 +9,7 @@ import {
 
 export function RightNav() {
   return (
-    <aside className=" sticky top-0 z-10 pt-6 left-0 min-w-[320px] max-w-custom-1 flex flex-col gap-6">
+    <aside className="hidden sticky top-[3.75rem] z-10 pt-6 left-0 min-w-[320px] max-w-custom-1 lg:flex flex-col gap-6">
       {/* SERVICE */}
       <div className="bg-white rounded-xl min-h-[200px]">
         <div className="flex gap-2 px-4 pt-2">

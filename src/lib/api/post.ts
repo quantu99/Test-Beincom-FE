@@ -10,7 +10,7 @@ import {
   PublishDraftDto,
   UpdateDraftDto,
   UpdatePostDto,
-} from '@/types/post';
+} from '@/types';
 import { apiClient } from './client';
 
 const buildQueryString = (params: Record<string, any>): string => {
@@ -24,7 +24,6 @@ const buildQueryString = (params: Record<string, any>): string => {
 };
 
 export const postsApi = {
-  // Create post (now without file upload)
   create: async (data: CreatePostDto): Promise<Post> => {
     return apiClient.post('/posts', data);
   },
@@ -39,7 +38,6 @@ export const postsApi = {
     return apiClient.get(`/posts/${id}`);
   },
 
-  // Update post (now without file upload)
   update: async (id: string, data: UpdatePostDto): Promise<Post> => {
     return apiClient.patch(`/posts/${id}`, data);
   },
@@ -52,6 +50,14 @@ export const postsApi = {
     return apiClient.post(`/posts/${id}/like`);
   },
 
+  getLikeStatus: async (id: string): Promise<boolean> => {
+    return apiClient.get(`/posts/${id}/like-status`);
+  },
+
+  toggleLike: async (id: string): Promise<{ post: Post; isLiked: boolean }> => {
+    return apiClient.post(`/posts/${id}/toggle-like`);
+  },
+
   getPopular: async (limit?: number): Promise<Post[]> => {
     const url = limit ? `/posts/popular?limit=${limit}` : '/posts/popular';
     return apiClient.get(url);
@@ -62,7 +68,6 @@ export const postsApi = {
     return apiClient.get(url);
   },
 
-  // Draft methods (now without file upload)
   drafts: {
     create: async (data: CreateDraftDto): Promise<Post> => {
       return apiClient.post('/posts/drafts', data);
@@ -93,7 +98,6 @@ export const postsApi = {
     },
   },
 
-  // Separate image upload endpoint
   uploadImage: async (file: File): Promise<ImageUploadResponse> => {
     const formData = new FormData();
     formData.append('image', file);
@@ -105,7 +109,6 @@ export const postsApi = {
     });
   },
 
-  // Image utility methods
   getImageUrl: (filename: string): string => {
     return `${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/images/${filename}`;
   },

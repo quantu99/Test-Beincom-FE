@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 export function Communities() {
   return (
-    <aside className="sticky flex-1 top-0 z-10 pt-6 left-0 min-w-[320px] max-w-custom-1 ">
+    <aside className="xl:block hidden sticky flex-1 top-[3.75rem] z-10 pt-6 left-0 min-w-[320px] max-w-custom-1 ">
       <div className="py-4 px-2 flex flex-col  bg-white  rounded-xl min-h-[200px]">
         <div className="flex flex-col flex-wrap gap-y-1 px-2 pb-1">
           <div className="flex h-10 flex-col gap-4">
@@ -42,7 +42,6 @@ export function Communities() {
             </div>
           </div>
         </div>
-        {/* SCROLL */}
         <div className="flex flex-col overflow-y-auto overscroll-contain">
           <div className="group relative flex cursor-pointer gap-x-2 rounded-lg bg-white hover:rounded-lg hover:bg-neutral-2">
             <Link
@@ -71,7 +70,6 @@ export function Communities() {
               </div>
             </Link>
           </div>
-          {/* <div className="px-2 h-px shrink-0 w-full border border-customGray-1 my-1" /> */}
         </div>
       </div>
     </aside>

@@ -9,7 +9,7 @@ export default function LoginPage() {
   return (
     <AuthGuard requireAuth={false}>
       <div className="flex items-center gap-[124px]">
-        <div className="lg:hidden xl:flex flex-col gap-6">
+        <div className="hidden xl:flex flex-col gap-6">
           <div className="max-w-[180px]">
             <Img
               src={VARIABLE_CONSTANT.LOGO}

@@ -13,6 +13,7 @@ const config: Config = {
       colors: {
         customBlack: {
           1: '#171717',
+          2: '#2E3660',
         },
         customGray: {
           1: '#EAEDF2',

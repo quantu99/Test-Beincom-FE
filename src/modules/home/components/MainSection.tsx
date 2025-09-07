@@ -1,15 +1,13 @@
-'use client';
+'use client'  
 
-import { Button, CSFilter, Img } from '@/components';
-import { VARIABLE_CONSTANT } from '@/constants';
-import Link from 'next/link';
-import { useState } from 'react';
-import { PostContainer } from './PostContainer';
-import { postsApi } from '@/lib/api/post';
-import { PostsQueryDto } from '@/types/post';
-import { useQuery } from '@tanstack/react-query';
-import { FilterDropdown } from './FilterDropdown';
-import { Newsfeed } from './NewsFeed';
+import { Button, CSFilter } from '@/components'  
+import { useState, useRef, useEffect } from 'react'  
+import { PostContainer } from './PostContainer' 
+import { postsApi } from '@/lib/api/post' 
+import { PostsQueryDto } from '@/types/post'  
+import { useInfiniteQuery } from '@tanstack/react-query'  
+import { FilterDropdown } from './FilterDropdown' 
+import { Newsfeed } from './NewsFeed' 
 
 const MENU_SECTION = [
   {
@@ -24,7 +22,8 @@ const MENU_SECTION = [
     value: 'saved',
     title: 'Saved',
   },
-];
+] 
+
 export interface FilterOptions {
   sortBy:
     | 'createdAt'
@@ -33,83 +32,112 @@ export interface FilterOptions {
     | 'likes'
     | 'comments'
     | 'publishedAt'
-    | 'popular';
-  sortOrder: 'ASC' | 'DESC';
-  limit: number;
+    | 'popular' 
+  sortOrder: 'ASC' | 'DESC' 
+  limit: number 
 }
+
 export function MainSection() {
-  const [currentSection, setCurrentSection] = useState('following');
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [currentSection, setCurrentSection] = useState('following') 
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false) 
   const [filters, setFilters] = useState<FilterOptions>({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
     limit: 10,
-  });
+  })
+
+  const filterRef = useRef<HTMLDivElement>(null)
+
   const {
-    data: postsData,
+    data,
     isLoading,
     error,
-    refetch,
-  } = useQuery({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ['posts', filters],
-    queryFn: async () => {
+    queryFn: async ({ pageParam = 1 }) => {
       const queryParams: PostsQueryDto = {
         sortBy: filters.sortBy,
         sortOrder: filters.sortOrder,
         limit: filters.limit,
-        page: 1,
-      };
+        page: pageParam,
+      } 
 
       if (filters.sortBy === 'popular') {
-        return postsApi.getPopular(filters.limit).then((posts) => ({
-          posts,
+        const posts = await postsApi.getPopular(filters.limit * pageParam)
+        const startIndex = (pageParam - 1) * filters.limit
+        const endIndex = startIndex + filters.limit
+        const paginatedPosts = posts.slice(startIndex, endIndex)
+        
+        return {
+          posts: paginatedPosts,
           total: posts.length,
-          page: 1,
+          page: pageParam,
           limit: filters.limit,
-          totalPages: 1,
-        }));
+          totalPages: Math.ceil(posts.length / filters.limit),
+          hasMore: endIndex < posts.length,
+        }
       }
 
-      return postsApi.getAll(queryParams);
+      const result = await postsApi.getAll(queryParams)
+      return {
+        ...result,
+        hasMore: result.page < result.totalPages,
+      }
     },
+    getNextPageParam: (lastPage) => {
+      return lastPage.hasMore ? lastPage.page + 1 : undefined
+    },
+    initialPageParam: 1,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
-  });
+  })  
+
+  const allPosts = data?.pages.flatMap(page => page.posts) || []
 
   const handleFilterApply = (newFilters: FilterOptions) => {
-    setFilters(newFilters);
-    setShowFilterDropdown(false);
-  };
+    setFilters(newFilters)  
+    setShowFilterDropdown(false)  
+  } 
 
   const handleFilterReset = () => {
     const defaultFilters: FilterOptions = {
       sortBy: 'createdAt',
       sortOrder: 'DESC',
       limit: 10,
-    };
-    setFilters(defaultFilters);
-  };
+    } 
+    setFilters(defaultFilters)  
+  }
+
+  const handleFilterToggle = () => {
+    setShowFilterDropdown(!showFilterDropdown)  
+  }
+
+  const handleFilterClose = () => {
+    setShowFilterDropdown(false)
+  }
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
+        setShowFilterDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <section
-      className="min-w-[524px] max-w-[672px] flex-1 pt-6 "
-      id="newsfeed "
+      className="min-w-[524px] max-w-[672px] flex-1 pt-6 px-10 lg:px-0"
+      id="newsfeed"
     >
-      {/* POST CONTAINER */}
       <PostContainer />
-      {/* EVENT */}
-      <Link
-        href="#"
-        className="h-auto w-full rounded-lg"
-      >
-        <Img
-          src={VARIABLE_CONSTANT.EVENT_BANNER_3}
-          alt="event"
-          className="w-full h-full rounded-lg"
-          fit="cover"
-        />
-      </Link>
-      {/* FILTER */}
       <div className="flex justify-between items-center py-4">
         <div className="h-full items-center justify-center rounded-md flex gap-3 p-0">
           {MENU_SECTION.map((ms) => (
@@ -134,13 +162,12 @@ export function MainSection() {
             </div>
           ))}
         </div>
-        <div className="relative">
+        <div className="relative" ref={filterRef}>
           <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowFilterDropdown(!showFilterDropdown);
-            }}
-            className="flex items-center gap-2 !bg-transparent hover:!bg-transparent !px-3 !py-2"
+            onClick={handleFilterToggle}
+            className={`flex items-center gap-2 !bg-transparent hover:!bg-transparent !px-3 !py-2 ${
+              showFilterDropdown ? 'ring-2 ring-customPurple-1/20' : ''
+            }`}
           >
             <div className="size-5 [&>svg>path]:fill-neutral-40">
               <CSFilter />
@@ -149,19 +176,21 @@ export function MainSection() {
           </Button>
           <FilterDropdown
             isOpen={showFilterDropdown}
-            onClose={() => setShowFilterDropdown(false)}
+            onClose={handleFilterClose}
             filters={filters}
             onApply={handleFilterApply}
             onReset={handleFilterReset}
           />
         </div>
       </div>
-      {/* NEWSFEED SECTION */}
       <Newsfeed
-        posts={postsData?.posts || []}
+        posts={allPosts}
         isLoading={isLoading}
         error={error}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
       />
     </section>
-  );
+  ) 
 }

@@ -6,7 +6,7 @@ export async function MainLayout({ children }: any) {
     <div className="relative">
       <Header />
       <MainBody>
-        <div className={`min-h-screen relative mt-[3.75rem]`}>{children}</div>
+        <div className={`mt-[3.75rem] pb-[3.75rem]`}>{children}</div>
       </MainBody>
     </div>
   );
