@@ -3,167 +3,178 @@
 
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import * as THREE from 'three';
+import dynamic from 'next/dynamic';
 
-function ThreeScene({ containerRef }: { containerRef: React.RefObject<HTMLDivElement> }) {
-  const sceneRef = useRef<THREE.Scene>();
-  const rendererRef = useRef<THREE.WebGLRenderer>();
-  const cameraRef = useRef<THREE.PerspectiveCamera>();
+const ThreeScene = dynamic(() => Promise.resolve(ThreeSceneComponent), {
+  ssr: false,
+});
+
+function ThreeSceneComponent({ containerRef }: { containerRef: React.RefObject<HTMLDivElement> }) {
+  const sceneRef = useRef<any>();
+  const rendererRef = useRef<any>();
+  const cameraRef = useRef<any>();
   const animationRef = useRef<number>();
-  const textMeshesRef = useRef<THREE.Mesh[]>([]);
-  const particlesRef = useRef<THREE.Points>();
+  const textMeshesRef = useRef<any[]>([]);
+  const particlesRef = useRef<any>();
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || typeof window === 'undefined') return;
 
-    const scene = new THREE.Scene();
-    sceneRef.current = scene;
+    // Dynamic import Three.js only on client side
+    import('three').then((THREE) => {
+      const scene = new THREE.Scene();
+      sceneRef.current = scene;
 
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      containerRef.current.clientWidth / containerRef.current.clientHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 8;
-    cameraRef.current = camera;
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        containerRef.current!.clientWidth / containerRef.current!.clientHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 8;
+      cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ 
-      alpha: true, 
-      antialias: true 
-    });
-    renderer.setSize(
-      containerRef.current.clientWidth,
-      containerRef.current.clientHeight
-    );
-    renderer.setClearColor(0x000000, 0);
-    rendererRef.current = renderer;
-    containerRef.current.appendChild(renderer.domElement);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-    pointLight.position.set(10, 10, 10);
-    scene.add(pointLight);
-
-    const meshColors = [0x6F32BB, 0x8043CC, 0x5F2BA0];
-    const letters = ['B', 'I', 'C'];
-    const meshPositions = [-2, 0, 2];
-    
-    letters.forEach((letter, index) => {
-      const geometry = new THREE.BoxGeometry(1, 1.5, 0.2);
-      const material = new THREE.MeshPhongMaterial({ 
-        color: meshColors[index],
-        shininess: 100
+      const renderer = new THREE.WebGLRenderer({ 
+        alpha: true, 
+        antialias: true 
       });
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.x = meshPositions[index];
-      mesh.userData = { 
-        originalY: 0,
-        originalX: meshPositions[index],
-        index: index
-      };
+      renderer.setSize(
+        containerRef.current!.clientWidth,
+        containerRef.current!.clientHeight
+      );
+      renderer.setClearColor(0x000000, 0);
+      rendererRef.current = renderer;
+      containerRef.current!.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+
+      const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+      pointLight.position.set(10, 10, 10);
+      scene.add(pointLight);
+
+      const meshColors = [0x6F32BB, 0x8043CC, 0x5F2BA0];
+      const letters = ['B', 'I', 'C'];
+      const meshPositions = [-2, 0, 2];
       
-      scene.add(mesh);
-      textMeshesRef.current.push(mesh);
-    });
-
-    const particleCount = 200;
-    const particlePositions = new Float32Array(particleCount * 3);
-    const particleColors = new Float32Array(particleCount * 3);
-    
-    const purpleColors = [
-      new THREE.Color(0x6F32BB),
-      new THREE.Color(0x5F2BA0),
-      new THREE.Color(0xB3B9DA),
-      new THREE.Color(0x8043CC),
-      new THREE.Color(0xDAC9F0)
-    ];
-
-    for (let i = 0; i < particleCount; i++) {
-      particlePositions[i * 3] = (Math.random() - 0.5) * 20;
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-      
-      const color = purpleColors[Math.floor(Math.random() * purpleColors.length)];
-      particleColors[i * 3] = color.r;
-      particleColors[i * 3 + 1] = color.g;
-      particleColors[i * 3 + 2] = color.b;
-    }
-
-    const particleGeometry = new THREE.BufferGeometry();
-    particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
-
-    const particleMaterial = new THREE.PointsMaterial({
-      size: 0.1,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.8
-    });
-
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(particles);
-    particlesRef.current = particles;
-
-    const animate = (time: number) => {
-      animationRef.current = requestAnimationFrame(animate);
-      
-      const t = time * 0.001;
-
-      textMeshesRef.current.forEach((mesh, index) => {
-        mesh.rotation.y = Math.sin(t * 0.5 + index) * 0.3;
-        mesh.position.y = mesh.userData.originalY + Math.sin(t + index * 1.2) * 0.3;
-        mesh.position.z = Math.sin(t * 0.3 + index * 0.8) * 0.5;
-      });
-
-      if (particlesRef.current) {
-        particlesRef.current.rotation.x = t * 0.05;
-        particlesRef.current.rotation.y = t * 0.1;
+      letters.forEach((letter, index) => {
+        const geometry = new THREE.BoxGeometry(1, 1.5, 0.2);
+        const material = new THREE.MeshPhongMaterial({ 
+          color: meshColors[index],
+          shininess: 100
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = meshPositions[index];
+        mesh.userData = { 
+          originalY: 0,
+          originalX: meshPositions[index],
+          index: index
+        };
         
-        const positions = particlesRef.current.geometry.attributes.position.array as Float32Array;
-        for (let i = 0; i < positions.length; i += 3) {
-          positions[i + 1] += Math.sin(t + i) * 0.01;
+        scene.add(mesh);
+        textMeshesRef.current.push(mesh);
+      });
+
+      const particleCount = 200;
+      const particlePositions = new Float32Array(particleCount * 3);
+      const particleColors = new Float32Array(particleCount * 3);
+      
+      const purpleColors = [
+        new THREE.Color(0x6F32BB),
+        new THREE.Color(0x5F2BA0),
+        new THREE.Color(0xB3B9DA),
+        new THREE.Color(0x8043CC),
+        new THREE.Color(0xDAC9F0)
+      ];
+
+      for (let i = 0; i < particleCount; i++) {
+        particlePositions[i * 3] = (Math.random() - 0.5) * 20;
+        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+        particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+        
+        const color = purpleColors[Math.floor(Math.random() * purpleColors.length)];
+        particleColors[i * 3] = color.r;
+        particleColors[i * 3 + 1] = color.g;
+        particleColors[i * 3 + 2] = color.b;
+      }
+
+      const particleGeometry = new THREE.BufferGeometry();
+      particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+      particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
+
+      const particleMaterial = new THREE.PointsMaterial({
+        size: 0.1,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8
+      });
+
+      const particles = new THREE.Points(particleGeometry, particleMaterial);
+      scene.add(particles);
+      particlesRef.current = particles;
+
+      const animate = (time: number) => {
+        animationRef.current = requestAnimationFrame(animate);
+        
+        const t = time * 0.001;
+
+        textMeshesRef.current.forEach((mesh, index) => {
+          if (mesh) {
+            mesh.rotation.y = Math.sin(t * 0.5 + index) * 0.3;
+            mesh.position.y = mesh.userData.originalY + Math.sin(t + index * 1.2) * 0.3;
+            mesh.position.z = Math.sin(t * 0.3 + index * 0.8) * 0.5;
+          }
+        });
+
+        if (particlesRef.current) {
+          particlesRef.current.rotation.x = t * 0.05;
+          particlesRef.current.rotation.y = t * 0.1;
+          
+          const positions = particlesRef.current.geometry.attributes.position.array as Float32Array;
+          for (let i = 0; i < positions.length; i += 3) {
+            positions[i + 1] += Math.sin(t + i) * 0.01;
+          }
+          particlesRef.current.geometry.attributes.position.needsUpdate = true;
         }
-        particlesRef.current.geometry.attributes.position.needsUpdate = true;
-      }
 
-      const radius = 8;
-      camera.position.x = Math.cos(t * 0.1) * radius;
-      camera.position.z = Math.sin(t * 0.1) * radius;
-      camera.lookAt(0, 0, 0);
+        const radius = 8;
+        camera.position.x = Math.cos(t * 0.1) * radius;
+        camera.position.z = Math.sin(t * 0.1) * radius;
+        camera.lookAt(0, 0, 0);
 
-      renderer.render(scene, camera);
-    };
+        renderer.render(scene, camera);
+      };
 
-    animate(0);
+      animate(0);
 
-    const handleResize = () => {
-      if (!containerRef.current || !camera || !renderer) return;
-      
-      const width = containerRef.current.clientWidth;
-      const height = containerRef.current.clientHeight;
-      
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    };
+      const handleResize = () => {
+        if (!containerRef.current || !camera || !renderer) return;
+        
+        const width = containerRef.current.clientWidth;
+        const height = containerRef.current.clientHeight;
+        
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      };
 
-    window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-      if (containerRef.current && rendererRef.current) {
-        containerRef.current.removeChild(rendererRef.current.domElement);
-      }
-      if (rendererRef.current) {
-        rendererRef.current.dispose();
-      }
-    };
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        if (animationRef.current) {
+          cancelAnimationFrame(animationRef.current);
+        }
+        if (containerRef.current && rendererRef.current) {
+          containerRef.current.removeChild(rendererRef.current.domElement);
+        }
+        if (rendererRef.current) {
+          rendererRef.current.dispose();
+        }
+      };
+    }).catch((error) => {
+      console.error('Failed to load Three.js:', error);
+    });
   }, []);
 
   return null;
@@ -273,6 +284,9 @@ export function Loading() {
         </motion.h1>
       </motion.div>
 
+      {/* Three.js 3D scene container */}
+      <div ref={containerRef} className="absolute inset-0 pointer-events-none opacity-30" />
+
       <motion.div
         className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-center"
         initial={{ y: 30, opacity: 0 }}
@@ -339,6 +353,8 @@ export function Loading() {
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
+
+      <ThreeScene containerRef={containerRef} />
     </motion.div>
   );
 }

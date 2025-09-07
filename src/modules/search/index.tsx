@@ -341,10 +341,15 @@ function SearchPagination({
   totalPages: number;
   onPageChange: (page: number) => void;
 }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const getPageNumbers = () => {
     const pages = [];
-    const showPages =
-      typeof window !== 'undefined' && window.innerWidth < 640 ? 3 : 5;
+    const showPages = isClient && window.innerWidth < 640 ? 3 : 5;
     let start = Math.max(1, currentPage - Math.floor(showPages / 2));
     let end = Math.min(totalPages, start + showPages - 1);
 
@@ -547,7 +552,9 @@ export function Search() {
 
   const handlePageChange = (newPage: number) => {
     updateSearchParams({ page: newPage });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
