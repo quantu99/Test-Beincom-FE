@@ -49,9 +49,9 @@ npm test
 ```
 
 ## Tech Stack
-
+--**DOMAIN DEPLOY**: (https://test-beincom-fe.vercel.app/)
 - **Frontend**: Next.js 14, React, TypeScript
-- **Backend API**: [Backend Documentation](https://test-beincom-be.onrender.com/api)
+- **Backend API**: [Backend Documentation](https://test-beincom-be.onrender.com/api) (GITHUB: https://github.com/quantu99/Test-Beincom-BE)
 - **Database**: Supabase
 - **Styling**: Tailwind CSS (assumed)
 - **Font Optimization**: [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) with Inter Google Font
