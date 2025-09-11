@@ -1,13 +1,13 @@
-'use client'  
+'use client';
 
-import { Button, CSFilter } from '@/components'  
-import { useState, useRef, useEffect } from 'react'  
-import { PostContainer } from './PostContainer' 
-import { postsApi } from '@/lib/api/post' 
-import { PostsQueryDto } from '@/types/post'  
-import { useInfiniteQuery } from '@tanstack/react-query'  
-import { FilterDropdown } from './FilterDropdown' 
-import { Newsfeed } from './NewsFeed' 
+import { Button, CSFilter } from '@/components';
+import { useState, useRef, useEffect } from 'react';
+import { PostContainer } from './PostContainer';
+import { postsApi } from '@/lib/api/post';
+import { PostsQueryDto } from '@/types/post';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { FilterDropdown } from './FilterDropdown';
+import { Newsfeed } from './NewsFeed';
 
 const MENU_SECTION = [
   {
@@ -22,7 +22,7 @@ const MENU_SECTION = [
     value: 'saved',
     title: 'Saved',
   },
-] 
+];
 
 export interface FilterOptions {
   sortBy:
@@ -32,21 +32,21 @@ export interface FilterOptions {
     | 'likes'
     | 'comments'
     | 'publishedAt'
-    | 'popular' 
-  sortOrder: 'ASC' | 'DESC' 
-  limit: number 
+    | 'popular';
+  sortOrder: 'ASC' | 'DESC';
+  limit: number;
 }
 
 export function MainSection() {
-  const [currentSection, setCurrentSection] = useState('following') 
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false) 
+  const [currentSection, setCurrentSection] = useState('following');
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
     limit: 10,
-  })
+  });
 
-  const filterRef = useRef<HTMLDivElement>(null)
+  const filterRef = useRef<HTMLDivElement>(null);
 
   const {
     data,
@@ -63,14 +63,14 @@ export function MainSection() {
         sortOrder: filters.sortOrder,
         limit: filters.limit,
         page: pageParam,
-      } 
+      };
 
       if (filters.sortBy === 'popular') {
-        const posts = await postsApi.getPopular(filters.limit * pageParam)
-        const startIndex = (pageParam - 1) * filters.limit
-        const endIndex = startIndex + filters.limit
-        const paginatedPosts = posts.slice(startIndex, endIndex)
-        
+        const posts = await postsApi.getPopular(filters.limit * pageParam);
+        const startIndex = (pageParam - 1) * filters.limit;
+        const endIndex = startIndex + filters.limit;
+        const paginatedPosts = posts.slice(startIndex, endIndex);
+
         return {
           posts: paginatedPosts,
           total: posts.length,
@@ -78,46 +78,46 @@ export function MainSection() {
           limit: filters.limit,
           totalPages: Math.ceil(posts.length / filters.limit),
           hasMore: endIndex < posts.length,
-        }
+        };
       }
 
-      const result = await postsApi.getAll(queryParams)
+      const result = await postsApi.getAll(queryParams);
       return {
         ...result,
         hasMore: result.page < result.totalPages,
-      }
+      };
     },
     getNextPageParam: (lastPage) => {
-      return lastPage.hasMore ? lastPage.page + 1 : undefined
+      return lastPage.hasMore ? lastPage.page + 1 : undefined;
     },
     initialPageParam: 1,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
-  })  
+  });
 
-  const allPosts = data?.pages.flatMap(page => page.posts) || []
+  const allPosts = data?.pages.flatMap((page) => page.posts) || [];
 
   const handleFilterApply = (newFilters: FilterOptions) => {
-    setFilters(newFilters)  
-    setShowFilterDropdown(false)  
-  } 
+    setFilters(newFilters);
+    setShowFilterDropdown(false);
+  };
 
   const handleFilterReset = () => {
     const defaultFilters: FilterOptions = {
       sortBy: 'createdAt',
       sortOrder: 'DESC',
       limit: 10,
-    } 
-    setFilters(defaultFilters)  
-  }
+    };
+    setFilters(defaultFilters);
+  };
 
   const handleFilterToggle = () => {
-    setShowFilterDropdown(!showFilterDropdown)  
-  }
+    setShowFilterDropdown(!showFilterDropdown);
+  };
 
   const handleFilterClose = () => {
-    setShowFilterDropdown(false)
-  }
+    setShowFilterDropdown(false);
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -134,6 +134,7 @@ export function MainSection() {
 
   return (
     <section
+      role="main"
       className="min-w-[524px] max-w-[672px] flex-1 pt-6 px-10 lg:px-0 mt-[3.75rem]"
       id="newsfeed"
     >
@@ -162,7 +163,10 @@ export function MainSection() {
             </div>
           ))}
         </div>
-        <div className="relative" ref={filterRef}>
+        <div
+          className="relative"
+          ref={filterRef}
+        >
           <Button
             onClick={handleFilterToggle}
             className={`flex items-center gap-2 !bg-transparent hover:!bg-transparent !px-3 !py-2 ${
@@ -192,5 +196,5 @@ export function MainSection() {
         isFetchingNextPage={isFetchingNextPage}
       />
     </section>
-  ) 
+  );
 }

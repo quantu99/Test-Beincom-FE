@@ -52,7 +52,10 @@ const ACTION_ARR = [
 ];
 
 const PostSkeleton = () => (
-  <div className="bg-white rounded-lg shadow-sm border p-4 animate-pulse">
+  <div
+    data-testid="post-skeleton"
+    className="bg-white rounded-lg shadow-sm border p-4 animate-pulse"
+  >
     <div className="flex items-center gap-3 mb-4">
       <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
       <div className="flex-1">
@@ -101,7 +104,7 @@ export function Newsfeed({
       });
       if (node) observer.current.observe(node);
     },
-    [isLoading, hasNextPage, isFetchingNextPage, fetchNextPage],
+    [isLoading, hasNextPage, isFetchingNextPage, fetchNextPage]
   );
 
   if (isLoading) {
@@ -203,7 +206,6 @@ function PostItem({ post }: PostItemProps) {
   const [currentLikes, setCurrentLikes] = useState(post.likes);
   const [isLoadingLikeStatus, setIsLoadingLikeStatus] = useState(true);
 
-  // Get like status when component mounts
   useEffect(() => {
     const checkLikeStatus = async () => {
       if (!user) {
@@ -224,18 +226,15 @@ function PostItem({ post }: PostItemProps) {
     checkLikeStatus();
   }, [post.id, user]);
 
-  // Get comments for this post
   const { data: comments = [], isLoading: commentsLoading } = useQuery({
     queryKey: ['comments', post.id],
     queryFn: () => commentsApi.getByPost(post.id),
-    select: (data) => data.slice(0, 1), // Limit to 1 comment (latest)
+    select: (data) => data.slice(0, 1),
   });
 
-  // Toggle like mutation
   const toggleLikeMutation = useMutation({
     mutationFn: () => postsApi.toggleLike(post.id),
     onMutate: async () => {
-      // Optimistic update
       const previousIsLiked = isLiked;
       const previousLikes = currentLikes;
 
@@ -245,11 +244,9 @@ function PostItem({ post }: PostItemProps) {
       return { previousIsLiked, previousLikes };
     },
     onSuccess: (response) => {
-      // Update with server response
       setIsLiked(response.isLiked);
       setCurrentLikes(response.post.likes);
 
-      // Update the post in the cache
       queryClient.setQueryData(['posts'], (oldData: any) => {
         if (!oldData) return oldData;
         return {
@@ -257,14 +254,13 @@ function PostItem({ post }: PostItemProps) {
           pages: oldData.pages.map((page: any) => ({
             ...page,
             posts: page.posts.map((p: Post) =>
-              p.id === post.id ? { ...p, likes: response.post.likes } : p,
+              p.id === post.id ? { ...p, likes: response.post.likes } : p
             ),
           })),
         };
       });
     },
     onError: (error, variables, context) => {
-      // Revert optimistic update on error
       if (context) {
         setIsLiked(context.previousIsLiked);
         setCurrentLikes(context.previousLikes);
@@ -273,12 +269,10 @@ function PostItem({ post }: PostItemProps) {
     },
   });
 
-  // Comment mutation
   const commentMutation = useMutation({
     mutationFn: ({ content }: { content: string }) =>
       commentsApi.create(post.id, { content }),
     onSuccess: () => {
-      // Refetch comments after successful comment creation
       queryClient.invalidateQueries({ queryKey: ['comments', post.id] });
     },
     onError: (error) => {
@@ -289,10 +283,17 @@ function PostItem({ post }: PostItemProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 1) return 'Yesterday';
+    const isYesterday =
+      date.getDate() === now.getDate() - 1 &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear();
+
+    if (isYesterday) return 'Yesterday';
+
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
     if (diffDays < 7) return `${diffDays} day ago`;
     if (diffDays < 30) return `${Math.floor(diffDays / 7)} week ago`;
     return date.toLocaleDateString('vi-VN');
@@ -306,7 +307,6 @@ function PostItem({ post }: PostItemProps) {
 
   const handleToggleLike = () => {
     if (!user) {
-      // Handle unauthenticated user - maybe show login modal
       console.log('User must be logged in to like posts');
       return;
     }
@@ -322,14 +322,11 @@ function PostItem({ post }: PostItemProps) {
         handleToggleLike();
         break;
       case 'comment':
-        // Focus on comment input
         document.getElementById(`comment-input-${post.id}`)?.focus();
         break;
       case 'share':
-        // Handle share functionality
         break;
       case 'donate':
-        // Handle donate functionality
         break;
     }
   };
@@ -348,7 +345,7 @@ function PostItem({ post }: PostItemProps) {
           <div className="size-10 aspect-square">
             <Img
               src={post.author.avatar || VARIABLE_CONSTANT.NO_AVATAR}
-              alt="avatar"
+              alt={`${post.author.name} avatar` || 'avatar'}
               className="w-full h-full rounded-full"
               fit="cover"
             />
@@ -384,7 +381,7 @@ function PostItem({ post }: PostItemProps) {
         <div className="px-4 pb-4 h-[520px]">
           <Img
             src={post.image}
-            alt={post.title}
+            alt={post.title || 'post image'}
             className="w-auto h-full rounded-lg"
             fit="cover"
           />
@@ -468,9 +465,7 @@ function PostItem({ post }: PostItemProps) {
           })}
         </div>
 
-        {/* Comments section */}
         <div className="flex flex-col">
-          {/* Existing comments */}
           {commentsLoading ? (
             <div className="px-4 py-3">
               <div className="animate-pulse flex items-start gap-3">
@@ -491,7 +486,7 @@ function PostItem({ post }: PostItemProps) {
                   <div className="w-8 h-8 aspect-square">
                     <Img
                       src={comment.author.avatar || VARIABLE_CONSTANT.NO_AVATAR}
-                      alt={comment.author.name}
+                      alt={comment.author.name || 'author image'}
                       className="w-full h-full rounded-full"
                       fit="cover"
                     />
@@ -514,12 +509,11 @@ function PostItem({ post }: PostItemProps) {
             ))
           )}
 
-          {/* Comment input */}
           <div className="flex items-center gap-x-2 p-4">
             <div className="w-10 h-10 aspect-square">
               <Img
                 src={user?.avatar || VARIABLE_CONSTANT.NO_AVATAR}
-                alt="avatar"
+                alt={user?.name || 'avatar'}
                 className="w-full h-full rounded-full"
                 fit="cover"
               />

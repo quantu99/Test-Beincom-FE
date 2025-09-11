@@ -34,7 +34,6 @@ export function useEffectRouter(
 ) {
   const { pathname, searchParams } = useCurrentUrl();
 
-  // deps theo type
   const deps: string[] = [];
   if (type === 'both') {
     deps.push(pathname, searchParams.toString());

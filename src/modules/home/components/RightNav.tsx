@@ -10,7 +10,6 @@ import {
 export function RightNav() {
   return (
     <aside className="hidden sticky top-[3.75rem] z-10 pt-6 left-0 min-w-[320px] max-w-custom-1 lg:flex flex-col gap-6">
-      {/* SERVICE */}
       <div className="bg-white rounded-xl min-h-[200px]">
         <div className="flex gap-2 px-4 pt-2">
           <div className="w-20 min-w-20 max-w-20 flex-none">
@@ -74,7 +73,6 @@ export function RightNav() {
           </div>
         </div>
       </div>
-      {/* EVENT */}
       <div className="relative w-full  h-full rounded-lg bg-white p-4 text-center">
         <div className="absolute inset-0 w-full h-[192px] z-0">
           <Img
@@ -98,7 +96,6 @@ export function RightNav() {
           </Button>
         </div>
       </div>
-      {/* MENU */}
       <div className="rounded-lg bg-white p-2">
         <div className="relative flex flex-col gap-2">
           {DUMMY_MENU_ARR.map((menu) => (

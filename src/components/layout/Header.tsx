@@ -209,7 +209,6 @@ function MobileMenu({
           })}
         </nav>
 
-        {/* Mobile Menu Actions */}
         <div className="px-4 pb-4 border-t border-neutral-5 pt-4">
           <div className="flex items-center gap-3 mb-4">
             {MENU_RIGHT.slice(0, 2).map((mr) => {
@@ -348,7 +347,6 @@ export function Header() {
     <>
       <header className="h-[3.75rem] fixed top-0 z-[99] w-full bg-white border-b shadow-1">
         <div className="h-full px-3 sm:px-6 xl:px-12 xl:gap-x-12 w-screen flex items-center justify-between lg:justify-center gap-x-3 sm:gap-x-6">
-          {/* MOBILE LEFT - Menu Button */}
           <div className="flex lg:hidden items-center">
             <button
               className="p-2 hover:bg-neutral-5 rounded-full"
@@ -358,7 +356,6 @@ export function Header() {
             </button>
           </div>
 
-          {/* DESKTOP LEFT - Logo Section */}
           <div className="hidden lg:flex min-w-custom-1 max-w-custom-1 items-center gap-2 xl:gap-4 flex-shrink-0">
             <Link
               href="/"
@@ -388,9 +385,7 @@ export function Header() {
             </div>
           </div>
 
-          {/* CENTER - Mobile Logo + Desktop Menu & Search */}
           <div className="h-full min-w-0 flex-1 lg:min-w-custom-2 lg:max-w-custom-2 lg:grow gap-x-6 flex items-center justify-center">
-            {/* Mobile Logo - Center */}
             <Link
               href="/"
               className="lg:hidden flex items-center gap-1.5 flex-shrink-0"
@@ -411,9 +406,7 @@ export function Header() {
               </div>
             </Link>
 
-            {/* Desktop Menu & Search Container */}
             <div className="hidden lg:flex items-center justify-center flex-1 gap-x-6">
-              {/* Desktop Menu */}
               <nav className="flex h-12 items-end">
                 {MENU_ARR.map((menu) => {
                   const Icon = menu.icon;
@@ -444,7 +437,6 @@ export function Header() {
                 })}
               </nav>
 
-              {/* Desktop Search */}
               <div className="flex-1 max-w-xs xl:max-w-[400px]">
                 <div
                   ref={searchContainerRef}
@@ -478,9 +470,7 @@ export function Header() {
             </div>
           </div>
 
-          {/* RIGHT - Actions */}
           <div className="flex justify-center max-w-custom-1 min-w-0 lg:min-w-[320px] items-center gap-1.5 sm:gap-2 lg:gap-3 flex-shrink-0">
-            {/* Mobile Search Button */}
             <button
               className="lg:hidden p-2 hover:bg-neutral-5 rounded-full flex-shrink-0"
               onClick={() => setIsMobileSearchOpen(true)}
@@ -488,7 +478,6 @@ export function Header() {
               <Search size={16} />
             </button>
 
-            {/* Desktop Action Buttons */}
             <div className="hidden sm:flex items-center gap-2">
               {MENU_RIGHT.slice(0, 2).map((mr) => {
                 const Icon = mr.icon;
@@ -506,8 +495,8 @@ export function Header() {
               })}
             </div>
 
-            {/* Profile Dropdown */}
             <div
+              data-testid="profile-avatar"
               className="relative h-7 w-7 sm:h-8 sm:w-8 flex rounded-full bg-neutral-2 justify-center items-center hover:bg-neutral-5 cursor-pointer flex-shrink-0"
               onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
               ref={profileDropdownRef}
@@ -525,10 +514,10 @@ export function Header() {
               />
             </div>
 
-            {/* Desktop Wallet - Hidden on mobile */}
             <div className="hidden sm:flex items-center">
               <div className="w-px h-6 mx-2 shrink-0 bg-customGray-1" />
               <Button
+                data-testid="wallet-button"
                 type="button"
                 className="flex items-center gap-2 h-8 px-2 lg:px-3 py-2 text-sm rounded-md bg-neutral-2 text-neutral-60 hover:bg-neutral-5"
               >
@@ -545,7 +534,6 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Search Overlay */}
         {isMobileSearchOpen && (
           <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg p-3 sm:p-4 z-50">
             <div className="flex items-center gap-3">

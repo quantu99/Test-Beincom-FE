@@ -129,7 +129,6 @@ function SearchFilters({
         </div>
       </div>
 
-      {/* Mobile Filter Overlay */}
       {isOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50">
           <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-y-auto">
@@ -454,7 +453,6 @@ function MobileFilterButton({
         </button>
       </div>
 
-      {/* Active filters display */}
       <div className="flex flex-wrap gap-2">
         {activeType !== 'all' && (
           <span className="px-2 py-1 bg-purple-5 text-customPurple-4 rounded text-xs font-medium">

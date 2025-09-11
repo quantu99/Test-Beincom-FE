@@ -131,7 +131,6 @@ export function CreatePostModal({
   const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const queryClient = useQueryClient();
 
-  // Image upload mutation
   const uploadImageMutation = useMutation({
     mutationFn: (file: File) => postsApi.uploadImage(file),
     onMutate: () => {
@@ -141,7 +140,6 @@ export function CreatePostModal({
       setImageUrl(result.url);
       setImageUploadStatus('success');
       setHasUnsavedChanges(true);
-      // Auto-save draft if exists
       if (currentDraftId) {
         setAutoSaveStatus('saving');
         updateDraftMutation.mutate({
@@ -161,7 +159,6 @@ export function CreatePostModal({
     },
   });
 
-  // Updated mutations to use image URL instead of file
   const createDraftMutation = useMutation({
     mutationFn: (data: CreateDraftDto) => postsApi.drafts.create(data),
     onSuccess: (draft: Post) => {
@@ -204,7 +201,6 @@ export function CreatePostModal({
     },
   });
 
-  // Auto-create draft when user starts typing
   const createDraftIfNeeded = useCallback(async () => {
     if (!currentDraftId && (title.trim() || content.trim())) {
       try {
@@ -219,7 +215,6 @@ export function CreatePostModal({
     }
   }, [currentDraftId, title, content, imageUrl]);
 
-  // Auto-save draft
   const autoSave = useCallback(async () => {
     if (!currentDraftId || !hasUnsavedChanges) return;
 
@@ -240,7 +235,6 @@ export function CreatePostModal({
     }
   }, [currentDraftId, hasUnsavedChanges, title, content, imageUrl]);
 
-  // Auto-save effect
   useEffect(() => {
     if (!currentDraftId || !hasUnsavedChanges) return;
 
@@ -250,7 +244,7 @@ export function CreatePostModal({
 
     autoSaveTimeoutRef.current = setTimeout(() => {
       autoSave();
-    }, 3000); // Auto-save after 3 seconds of inactivity
+    }, 3000); 
 
     return () => {
       if (autoSaveTimeoutRef.current) {
@@ -259,7 +253,6 @@ export function CreatePostModal({
     };
   }, [autoSave, hasUnsavedChanges]);
 
-  // Track changes
   useEffect(() => {
     const initialTitle = initialData?.title || '';
     const initialContent = initialData?.content || '';
@@ -271,7 +264,6 @@ export function CreatePostModal({
       imageUrl !== initialImage
     ) {
       setHasUnsavedChanges(true);
-      // Auto-create draft when user starts typing
       if (!currentDraftId) {
         createDraftIfNeeded();
       }
@@ -284,7 +276,6 @@ export function CreatePostModal({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validate file
     if (!file.type.startsWith('image/')) {
       alert('Vui lòng chọn file ảnh hợp lệ');
       return;
@@ -295,14 +286,12 @@ export function CreatePostModal({
       return;
     }
 
-    // Show preview immediately
     const reader = new FileReader();
     reader.onload = (e) => {
       setImagePreview(e.target?.result as string);
     };
     reader.readAsDataURL(file);
 
-    // Upload immediately
     uploadImageMutation.mutate(file);
   };
 
@@ -322,7 +311,6 @@ export function CreatePostModal({
       return;
     }
 
-    // If no draft exists, create one first
     if (!currentDraftId) {
       try {
         await createDraftMutation.mutateAsync({
@@ -337,7 +325,6 @@ export function CreatePostModal({
       }
     }
 
-    // Now publish the draft
     if (currentDraftId) {
       try {
         const publishData = hasUnsavedChanges

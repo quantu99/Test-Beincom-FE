@@ -1,6 +1,6 @@
 'use client';
 
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useState, useId } from 'react';
 import { CSEyeOpen, CSEyeClose, CSMagnifest } from './iconography';
 
 export interface InputProps
@@ -36,12 +36,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       helperClassName = '',
       className = '',
       type = 'text',
+      id: providedId,
       ...props
     },
     ref
   ) => {
     const [showPassword, setShowPassword] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
+    
+    const autoId = useId();
+    const inputId = providedId || autoId;
 
     const inputType =
       showPasswordToggle && type === 'password'
@@ -93,7 +97,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             className={`text-sm font-medium peer-disabled:cursor-not-allowed text-neutral-40 ${labelClassName}`}
-            htmlFor={props.id}
+            htmlFor={inputId}
           >
             {label}
             {props.required && <span className="text-red-500 ml-1">*</span>}
@@ -115,6 +119,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
           <input
             ref={ref}
+            id={inputId}
             type={inputType}
             className={`${getInputClasses()} ${className}`}
             onFocus={(e) => {
