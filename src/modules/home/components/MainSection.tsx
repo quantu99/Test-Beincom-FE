@@ -134,7 +134,7 @@ export function MainSection() {
 
   return (
     <section
-      className="min-w-[524px] max-w-[672px] flex-1 pt-6 px-10 lg:px-0"
+      className="min-w-[524px] max-w-[672px] flex-1 pt-6 px-10 lg:px-0 mt-[3.75rem]"
       id="newsfeed"
     >
       <PostContainer />

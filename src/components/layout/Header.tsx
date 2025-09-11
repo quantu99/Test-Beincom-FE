@@ -4,15 +4,10 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '@/store/zustand/authStore';
-import { Button, Img } from '../common';
+import { Button, Img, Input } from '../common';
 import { MENU_ARR, VARIABLE_CONSTANT } from '@/constants';
 import { SearchSuggestion } from '@/types/search';
-import {
-  CSBell,
-  CSChatBubble,
-  CSMagnifest,
-  CSWallet,
-} from '../common/iconography';
+import { CSBell, CSChatBubble, CSWallet } from '../common/iconography';
 import { searchApi } from '@/lib/api/search';
 import { LogOut, Menu, X, Search } from 'lucide-react';
 
@@ -51,7 +46,7 @@ function SearchDropdown({
     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-5 rounded-lg shadow-lg max-h-80 overflow-y-auto z-50">
       {isLoading ? (
         <div className="p-4 text-center text-neutral-40">
-          <div className="animate-spin rounded-full h-6 w-6 border-2 border-purple-50 border-t-transparent mx-auto"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-2 border-customPurple-4 border-t-transparent mx-auto"></div>
           <p className="mt-2 text-sm">Searching...</p>
         </div>
       ) : suggestions.length > 0 ? (
@@ -61,7 +56,7 @@ function SearchDropdown({
               <button
                 key={`${suggestion.type}-${suggestion.id}`}
                 className="w-full p-3 hover:bg-neutral-2 flex items-center gap-3 text-left border-b border-neutral-5 last:border-b-0"
-                // onClick={() => onSelect(suggestion)}
+                onClick={() => onSelect(suggestion)}
               >
                 <div className="w-8 h-8 rounded-full bg-neutral-5 flex items-center justify-center overflow-hidden flex-shrink-0">
                   <Img
@@ -87,7 +82,7 @@ function SearchDropdown({
             <div className="p-3 border-t border-neutral-5">
               <button
                 onClick={handleViewAllResults}
-                className="w-full p-2 text-center text-purple-50 hover:bg-purple-5 rounded-md font-medium text-sm transition-colors"
+                className="w-full p-2 text-center text-customPurple-4 hover:bg-purple-5 rounded-md font-medium text-sm transition-colors"
               >
                 View all results for &quot;{query}&quot;
               </button>
@@ -101,7 +96,7 @@ function SearchDropdown({
           </p>
           <button
             onClick={handleViewAllResults}
-            className="w-full p-2 text-center text-purple-50 hover:bg-purple-5 rounded-md font-medium text-sm transition-colors"
+            className="w-full p-2 text-center text-custoborder-customPurple-4 hover:bg-purple-5 rounded-md font-medium text-sm transition-colors"
           >
             Search anyway
           </button>
@@ -133,7 +128,7 @@ function ProfileDropdown({
       <Button
         onClick={onLogout}
         disabled={isLoading}
-        className="w-full flex items-center justify-center gap-2 p-3 text-left bg-neutral-2 font-semibold  hover:bg-customPurple-4 text-sm !text-neutral-60 hover:!text-neutral-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+        className="w-full flex items-center justify-center gap-2 p-3 text-left bg-neutral-2 font-semibold hover:bg-customPurple-4 text-sm !text-neutral-60 hover:!text-neutral-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
       >
         <LogOut size={14} />
         {isLoading ? 'Logging out...' : 'Logout'}
@@ -195,7 +190,7 @@ function MobileMenu({
                 onClick={onClose}
                 className={`flex items-center gap-3 p-3 rounded-lg mb-1 ${
                   pathname === menu.url
-                    ? 'bg-purple-5 text-purple-50'
+                    ? 'bg-purple-5 text-customPurple-4'
                     : 'hover:bg-neutral-2'
                 }`}
               >
@@ -213,6 +208,38 @@ function MobileMenu({
             );
           })}
         </nav>
+
+        {/* Mobile Menu Actions */}
+        <div className="px-4 pb-4 border-t border-neutral-5 pt-4">
+          <div className="flex items-center gap-3 mb-4">
+            {MENU_RIGHT.slice(0, 2).map((mr) => {
+              const Icon = mr.icon;
+              return (
+                <button
+                  key={mr.value}
+                  className="flex items-center gap-2 p-3 rounded-lg bg-neutral-2 hover:bg-neutral-5 flex-1"
+                >
+                  <div className="[&>svg>path]:fill-neutral-40">
+                    {Icon && <Icon className="size-5" />}
+                  </div>
+                  <span className="text-sm font-medium text-neutral-60">
+                    {mr.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <Button
+            type="button"
+            className="w-full flex items-center justify-center gap-2 h-10 px-3 py-2 text-sm rounded-lg bg-neutral-2 text-neutral-60 hover:bg-neutral-5"
+          >
+            <div className="min-w-5 min-h-5 aspect-square [&>svg>path]:fill-neutral-40">
+              <CSWallet />
+            </div>
+            <span className="whitespace-nowrap text-neutral-40">Wallet</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -236,7 +263,6 @@ export function Header() {
   const profileDropdownRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
 
-  // Handle logout
   const handleLogout = async () => {
     try {
       await logout();
@@ -272,7 +298,6 @@ export function Header() {
     };
   }, [searchQuery]);
 
-  // Click outside handlers
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -322,17 +347,19 @@ export function Header() {
   return (
     <>
       <header className="h-[3.75rem] fixed top-0 z-[99] w-full bg-white border-b shadow-1">
-        <div className="h-full px-4 sm:px-6 xl:px-12 flex items-center justify-between">
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 hover:bg-neutral-5 rounded-full"
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <Menu size={20} />
-          </button>
+        <div className="h-full px-3 sm:px-6 xl:px-12 xl:gap-x-12 w-screen flex items-center justify-between lg:justify-center gap-x-3 sm:gap-x-6">
+          {/* MOBILE LEFT - Menu Button */}
+          <div className="flex lg:hidden items-center">
+            <button
+              className="p-2 hover:bg-neutral-5 rounded-full"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
+          </div>
 
-          {/* LEFT - Logo Section */}
-          <div className="hidden lg:flex min-w-0 items-center gap-2 xl:gap-4 flex-shrink-0">
+          {/* DESKTOP LEFT - Logo Section */}
+          <div className="hidden lg:flex min-w-custom-1 max-w-custom-1 items-center gap-2 xl:gap-4 flex-shrink-0">
             <Link
               href="/"
               className="flex items-center gap-1.5"
@@ -361,21 +388,21 @@ export function Header() {
             </div>
           </div>
 
-          {/* CENTER - Logo (Mobile) + Menu (Desktop) */}
-          <div className="flex items-center justify-center flex-1 lg:flex-initial">
-            {/* Mobile Logo */}
+          {/* CENTER - Mobile Logo + Desktop Menu & Search */}
+          <div className="h-full min-w-0 flex-1 lg:min-w-custom-2 lg:max-w-custom-2 lg:grow gap-x-6 flex items-center justify-center">
+            {/* Mobile Logo - Center */}
             <Link
               href="/"
-              className="lg:hidden flex items-center gap-1.5"
+              className="lg:hidden flex items-center gap-1.5 flex-shrink-0"
             >
-              <div className="size-6 aspect-square">
+              <div className="size-5 sm:size-6 aspect-square">
                 <Img
                   src={VARIABLE_CONSTANT.SHORT_LOGO}
                   fit="cover"
                   alt="SHORT_LOGO"
                 />
               </div>
-              <div className="w-16">
+              <div className="w-14 sm:w-16">
                 <Img
                   src={VARIABLE_CONSTANT.DARK_LOGO}
                   fit="cover"
@@ -384,83 +411,84 @@ export function Header() {
               </div>
             </Link>
 
-            {/* Desktop Menu */}
-            <nav className="hidden lg:flex h-12 items-end">
-              {MENU_ARR.map((menu) => {
-                const Icon = menu.icon;
-                return (
-                  <Link
-                    key={menu.label}
-                    href={menu.url}
-                    className="group relative flex h-12 w-16 xl:w-20 flex-col justify-between rounded-t-lg hover:bg-neutral-2"
-                  >
-                    <span
-                      className={`h-10 w-full flex items-center justify-center ${
-                        pathname === menu.url
-                          ? '[&>svg>path]:fill-[#6f32bb]'
-                          : '[&>svg>path]:fill-neutral-40'
-                      }`}
+            {/* Desktop Menu & Search Container */}
+            <div className="hidden lg:flex items-center justify-center flex-1 gap-x-6">
+              {/* Desktop Menu */}
+              <nav className="flex h-12 items-end">
+                {MENU_ARR.map((menu) => {
+                  const Icon = menu.icon;
+                  return (
+                    <Link
+                      key={menu.label}
+                      href={menu.url}
+                      className="group relative flex h-12 w-16 xl:w-20 flex-col justify-between rounded-t-lg hover:bg-neutral-2"
                     >
-                      <Icon />
-                    </span>
-                    <span
-                      className={`absolute bottom-0 left-0 z-10 h-1 w-full rounded-t-md transition-all ${
-                        pathname === menu.url
-                          ? 'bg-[#6f32bb]'
-                          : 'bg-transparent group-hover:bg-[#6f32bb]'
-                      }`}
+                      <span
+                        className={`h-10 w-full flex items-center justify-center ${
+                          pathname === menu.url
+                            ? '[&>svg>path]:fill-[#6f32bb]'
+                            : '[&>svg>path]:fill-neutral-40'
+                        }`}
+                      >
+                        <Icon />
+                      </span>
+                      <span
+                        className={`absolute bottom-0 left-0 z-10 h-1 w-full rounded-t-md transition-all ${
+                          pathname === menu.url
+                            ? 'bg-[#6f32bb]'
+                            : 'bg-transparent group-hover:bg-[#6f32bb]'
+                        }`}
+                      />
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              {/* Desktop Search */}
+              <div className="flex-1 max-w-xs xl:max-w-[400px]">
+                <div
+                  ref={searchContainerRef}
+                  className="relative w-full h-10 items-center justify-start gap-x-2 overflow-visible rounded-lg bg-white pr-2 flex focus-within:border-customPurple-4 focus-within:shadow-active hover:shadow-hover"
+                >
+                  <form
+                    onSubmit={handleSearchSubmit}
+                    className="flex items-center w-full"
+                  >
+                    <Input
+                      type="text"
+                      variant="search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onFocus={() => setIsDropdownOpen(true)}
+                      placeholder="Search users, posts..."
+                      containerClassName="w-full"
                     />
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
+                  </form>
 
-          {/* SEARCH - Desktop */}
-          <div className="hidden sm:flex flex-1 max-w-xs xl:max-w-[400px] mx-4 lg:mx-6">
-            <div
-              ref={searchContainerRef}
-              className="relative w-full h-10 items-center justify-start gap-x-2 overflow-visible rounded-lg border border-neutral-5 bg-white pr-2 flex focus-within:border-purple-50 focus-within:shadow-active hover:shadow-hover"
-            >
-              <form
-                onSubmit={handleSearchSubmit}
-                className="flex items-center w-full"
-              >
-                <span className="flex items-center pl-2 [&>svg>path]:fill-neutral-40">
-                  <CSMagnifest className="size-5" />
-                </span>
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setIsDropdownOpen(true)}
-                  placeholder="Search users, posts..."
-                  className="block w-full bg-transparent text-sm text-neutral-60 outline-none placeholder:text-sm placeholder:text-neutral-10 pl-2"
-                />
-              </form>
-
-              <SearchDropdown
-                suggestions={suggestions}
-                isOpen={isDropdownOpen}
-                onClose={() => setIsDropdownOpen(false)}
-                onSelect={handleSuggestionSelect}
-                query={searchQuery}
-                isLoading={isSearchLoading}
-              />
+                  <SearchDropdown
+                    suggestions={suggestions}
+                    isOpen={isDropdownOpen}
+                    onClose={() => setIsDropdownOpen(false)}
+                    onSelect={handleSuggestionSelect}
+                    query={searchQuery}
+                    isLoading={isSearchLoading}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
           {/* RIGHT - Actions */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <div className="flex justify-center max-w-custom-1 min-w-0 lg:min-w-[320px] items-center gap-1.5 sm:gap-2 lg:gap-3 flex-shrink-0">
             {/* Mobile Search Button */}
             <button
-              className="sm:hidden p-2 hover:bg-neutral-5 rounded-full"
+              className="lg:hidden p-2 hover:bg-neutral-5 rounded-full flex-shrink-0"
               onClick={() => setIsMobileSearchOpen(true)}
             >
-              <Search size={18} />
+              <Search size={16} />
             </button>
 
+            {/* Desktop Action Buttons */}
             <div className="hidden sm:flex items-center gap-2">
               {MENU_RIGHT.slice(0, 2).map((mr) => {
                 const Icon = mr.icon;
@@ -478,8 +506,9 @@ export function Header() {
               })}
             </div>
 
+            {/* Profile Dropdown */}
             <div
-              className="relative h-8 w-8 flex rounded-full bg-neutral-2 justify-center items-center hover:bg-neutral-5 cursor-pointer"
+              className="relative h-7 w-7 sm:h-8 sm:w-8 flex rounded-full bg-neutral-2 justify-center items-center hover:bg-neutral-5 cursor-pointer flex-shrink-0"
               onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
               ref={profileDropdownRef}
             >
@@ -496,7 +525,7 @@ export function Header() {
               />
             </div>
 
-            {/* Wallet - Hidden on mobile */}
+            {/* Desktop Wallet - Hidden on mobile */}
             <div className="hidden sm:flex items-center">
               <div className="w-px h-6 mx-2 shrink-0 bg-customGray-1" />
               <Button
@@ -518,27 +547,25 @@ export function Header() {
 
         {/* Mobile Search Overlay */}
         {isMobileSearchOpen && (
-          <div className="sm:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg p-4 z-50">
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg p-3 sm:p-4 z-50">
             <div className="flex items-center gap-3">
               <div
                 ref={searchContainerRef}
-                className="relative flex-1 h-10 items-center justify-start gap-x-2 overflow-visible rounded-lg border border-neutral-5 bg-white pr-2 flex focus-within:border-purple-50"
+                className="relative flex-1 h-10 items-center justify-start gap-x-2 overflow-visible rounded-lg bg-white pr-2 flex focus-within:border-customPurple-4"
               >
                 <form
                   onSubmit={handleSearchSubmit}
                   className="flex items-center w-full"
                 >
-                  <span className="flex items-center pl-2 [&>svg>path]:fill-neutral-40">
-                    <CSMagnifest className="size-5" />
-                  </span>
-                  <input
+                  <Input
                     type="text"
+                    variant="search"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setIsDropdownOpen(true)}
                     placeholder="Search users, posts..."
-                    className="block w-full bg-transparent text-sm text-neutral-60 outline-none placeholder:text-sm placeholder:text-neutral-10 pl-2"
                     autoFocus
+                    containerClassName="w-full"
                   />
                 </form>
 
@@ -553,7 +580,7 @@ export function Header() {
               </div>
               <button
                 onClick={() => setIsMobileSearchOpen(false)}
-                className="p-2 hover:bg-neutral-5 rounded-full"
+                className="p-2 hover:bg-neutral-5 rounded-full flex-shrink-0"
               >
                 <X size={18} />
               </button>

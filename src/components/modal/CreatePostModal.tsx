@@ -18,9 +18,9 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Dialog, DialogContent, Button, Img } from '../common';
+import { Input } from '../common/Input';
 import {
   Post,
-  PostStatus,
   CreateDraftDto,
   UpdateDraftDto,
   PublishDraftDto,
@@ -508,37 +508,18 @@ export function CreatePostModal({
 
           <div className="flex-1 p-6 overflow-auto flex flex-col bg-gradient-to-b from-white to-gray-50">
             <div className="mb-6">
-              <label
-                className="block text-sm font-semibold mb-3"
-                style={{ color: '#5F2BA0' }}
-              >
-                Title <span style={{ color: '#6F32BB' }}>*</span>
-              </label>
-              <input
-                type="text"
+              <Input
+                label="Title"
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
                   setHasUnsavedChanges(true);
                 }}
                 placeholder="Enter your post title..."
-                className="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none focus:ring-0 text-lg font-medium"
-                style={{
-                  borderColor: title ? '#8043CC' : '#DAC9F0',
-                  backgroundColor: 'white',
-                  color: '#374151',
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#6F32BB';
-                  e.target.style.transform = 'translateY(-1px)';
-                  e.target.style.boxShadow =
-                    '0 4px 12px rgba(111, 50, 187, 0.15)';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = title ? '#8043CC' : '#DAC9F0';
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = 'none';
-                }}
+                required
+                maxLength={100}
+                containerClassName="space-y-3"
+                labelClassName="text-sm font-semibold"
               />
               <div
                 className="text-xs mt-2 px-3 py-1 rounded-full inline-block font-medium"
@@ -551,7 +532,6 @@ export function CreatePostModal({
               </div>
             </div>
 
-            {/* Image Upload Section */}
             <div className="mb-6">
               <label
                 className="block text-sm font-semibold mb-3"
@@ -645,12 +625,12 @@ export function CreatePostModal({
                     />
                     {!isImageUploading && (
                       <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
-                        <button
+                        <Button
                           onClick={handleRemoveImage}
                           className="opacity-0 hover:opacity-100 transition-opacity duration-300 p-2 rounded-full bg-red-500 text-white hover:bg-red-600"
                         >
                           <Trash2 className="w-5 h-5" />
-                        </button>
+                        </Button>
                       </div>
                     )}
                   </div>
@@ -682,20 +662,19 @@ export function CreatePostModal({
                       </div>
                     </div>
                     {!isImageUploading && (
-                      <button
+                      <Button
                         onClick={handleRemoveImage}
-                        className="p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                        className="p-2 rounded-lg bg-red-50 hover:bg-red-500 transition-colors duration-200"
                         style={{ color: '#DC2626' }}
                       >
                         <X className="w-4 h-4" />
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Content Editor */}
             <div className="mb-6">
               <label
                 className="block text-sm font-semibold mb-3"

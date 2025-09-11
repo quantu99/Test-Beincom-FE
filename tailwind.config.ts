@@ -62,9 +62,11 @@ const config: Config = {
 
       minWidth: {
         'custom-1': '288px',
+        'custom-2': '524px',
       },
       maxWidth: {
         'custom-1': '320px',
+        'custom-2': '672px',
       },
     },
   },

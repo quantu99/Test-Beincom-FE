@@ -54,7 +54,7 @@ export default function SignupPage() {
             ))}
           </ul>
         </div>
-        <div className="bg-white rounded-2xl min-w-[350px]">
+        <div className="bg-white rounded-2xl lg:min-w-[500px]">
           <div className="flex w-full flex-col items-center gap-1 p-6 pt-12 xs:p-12 xs:pb-6">
             <div className="text-center text-lg font-bold text-neutral-80 lg:text-2xl">
               Join Beincom

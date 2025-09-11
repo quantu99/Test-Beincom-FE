@@ -1,6 +1,8 @@
-import { Loading as ILoading } from "@/components/auth/Loading";
+import { Loading as ILoading } from '@/components/auth/Loading';
 export default function Loading() {
-  return <div>
-  <ILoading />
-  </div>;
+  return (
+    <div>
+      <ILoading />
+    </div>
+  );
 }

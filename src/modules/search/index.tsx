@@ -101,7 +101,7 @@ function SearchFilters({
                   onClick={() => onSortOrderChange('DESC')}
                   className={`flex-1 p-2 rounded-lg text-sm font-medium transition-colors ${
                     sortOrder === 'DESC'
-                      ? 'bg-purple-50 text-white'
+                      ? 'bg-customPurple-4 text-white'
                       : 'bg-neutral-2 text-neutral-60 hover:bg-neutral-5'
                   }`}
                 >
@@ -111,7 +111,7 @@ function SearchFilters({
                   onClick={() => onSortOrderChange('ASC')}
                   className={`flex-1 p-2 rounded-lg text-sm font-medium transition-colors ${
                     sortOrder === 'ASC'
-                      ? 'bg-purple-50 text-white'
+                      ? 'bg-customPurple-4 text-white'
                       : 'bg-neutral-2 text-neutral-60 hover:bg-neutral-5'
                   }`}
                 >
@@ -198,7 +198,7 @@ function SearchFilters({
                       }
                       className={`flex-1 p-3 rounded-lg text-sm font-medium transition-colors ${
                         sortOrder === 'DESC'
-                          ? 'bg-purple-50 text-white'
+                          ? 'bg-customPurple-4 text-white'
                           : 'bg-neutral-2 text-neutral-60'
                       }`}
                     >
@@ -210,7 +210,7 @@ function SearchFilters({
                       }
                       className={`flex-1 p-3 rounded-lg text-sm font-medium transition-colors ${
                         sortOrder === 'ASC'
-                          ? 'bg-purple-50 text-white'
+                          ? 'bg-customPurple-4 text-white'
                           : 'bg-neutral-2 text-neutral-60'
                       }`}
                     >
@@ -306,7 +306,7 @@ function PostResult({ result }: { result: SearchResult }) {
                     alt={result.author.name}
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-to-br from-customPurple-4 to-blue-50 flex items-center justify-center">
                     <span className="text-xs font-bold text-white">
                       {result.author?.name.charAt(0).toUpperCase()}
                     </span>
@@ -387,7 +387,7 @@ function SearchPagination({
           onClick={() => onPageChange(page)}
           className={`px-2 sm:px-3 py-2 text-xs sm:text-sm border min-w-[32px] sm:min-w-[36px] ${
             currentPage === page
-              ? 'bg-purple-50 text-white border-purple-50'
+              ? 'bg-customPurple-4 text-white border-customPurple-4'
               : 'bg-white border-neutral-5 hover:bg-neutral-2'
           }`}
         >
@@ -457,12 +457,12 @@ function MobileFilterButton({
       {/* Active filters display */}
       <div className="flex flex-wrap gap-2">
         {activeType !== 'all' && (
-          <span className="px-2 py-1 bg-purple-5 text-purple-50 rounded text-xs font-medium">
+          <span className="px-2 py-1 bg-purple-5 text-customPurple-4 rounded text-xs font-medium">
             {activeType === 'user' ? 'Users' : 'Posts'}
           </span>
         )}
         {sortBy !== 'relevance' && (
-          <span className="px-2 py-1 bg-purple-5 text-purple-50 rounded text-xs font-medium">
+          <span className="px-2 py-1 bg-purple-5 text-customPurple-4 rounded text-xs font-medium">
             {sortBy === 'date' ? 'By Date' : 'By Popularity'}
           </span>
         )}
@@ -562,7 +562,7 @@ export function Search() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-1">
+    <div className="min-h-screen bg-neutral-1 mt-[3.75rem]">
       <div className="bg-white border-b border-neutral-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
           {query && (
