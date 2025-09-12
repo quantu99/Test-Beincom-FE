@@ -17,8 +17,7 @@ import {
 } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Dialog, DialogContent, Button, Img } from '../common';
-import { Input } from '../common/Input';
+import { Dialog, DialogContent, Button, Img, Input } from '../common';
 import {
   Post,
   CreateDraftDto,
@@ -244,7 +243,7 @@ export function CreatePostModal({
 
     autoSaveTimeoutRef.current = setTimeout(() => {
       autoSave();
-    }, 3000); 
+    }, 3000);
 
     return () => {
       if (autoSaveTimeoutRef.current) {
@@ -521,6 +520,7 @@ export function CreatePostModal({
 
             <div className="mb-6">
               <label
+                htmlFor="featuredImage"
                 className="block text-sm font-semibold mb-3"
                 style={{ color: '#5F2BA0' }}
               >
@@ -606,6 +606,7 @@ export function CreatePostModal({
                 >
                   <div className="relative">
                     <Img
+                      data-testid="image"
                       src={imagePreview}
                       alt="Preview"
                       className="w-full h-48 object-cover"
@@ -613,6 +614,7 @@ export function CreatePostModal({
                     {!isImageUploading && (
                       <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
                         <Button
+                          aria-label="Remove image (footer)"
                           onClick={handleRemoveImage}
                           className="opacity-0 hover:opacity-100 transition-opacity duration-300 p-2 rounded-full bg-red-500 text-white hover:bg-red-600"
                         >
@@ -650,6 +652,7 @@ export function CreatePostModal({
                     </div>
                     {!isImageUploading && (
                       <Button
+                        aria-label="Remove image (overlay)"
                         onClick={handleRemoveImage}
                         className="p-2 rounded-lg bg-red-50 hover:bg-red-500 transition-colors duration-200"
                         style={{ color: '#DC2626' }}
@@ -848,163 +851,7 @@ export function CreatePostModal({
           </div>
         </DialogContent>
       </Dialog>
-      <style
-        jsx
-        global
-      >{`
-        .ck-editor__editable {
-          border: none !important;
-          box-shadow: none !important;
-          padding: 2rem !important;
-          font-size: 15px !important;
-          line-height: 1.7 !important;
-          color: #374151 !important;
-        }
 
-        .ck-editor__editable:focus {
-          outline: none !important;
-        }
-
-        .ck-editor__editable.ck-focused {
-          background: #fefefe !important;
-        }
-
-        .ck-toolbar {
-          border: none !important;
-          border-bottom: 2px solid #dac9f0 !important;
-          background: linear-gradient(
-            135deg,
-            #dac9f0 0%,
-            #b3b9da 100%
-          ) !important;
-          padding: 1rem 1.5rem !important;
-          border-radius: 0 !important;
-        }
-
-        .ck-button {
-          border-radius: 8px !important;
-          transition: all 0.2s ease !important;
-          margin: 0 2px !important;
-        }
-
-        .ck-button:hover {
-          background: #8043cc !important;
-          color: white !important;
-          transform: translateY(-1px) !important;
-          box-shadow: 0 4px 8px rgba(111, 50, 187, 0.3) !important;
-        }
-
-        .ck-button.ck-on {
-          background: #6f32bb !important;
-          color: white !important;
-          box-shadow: 0 2px 8px rgba(111, 50, 187, 0.4) !important;
-        }
-
-        .ck-dropdown__button:hover {
-          background: #8043cc !important;
-          color: white !important;
-        }
-
-        .ck-dropdown__button.ck-on {
-          background: #6f32bb !important;
-          color: white !important;
-        }
-
-        .ck-editor__main {
-          max-height: 350px !important;
-          overflow-y: auto !important;
-        }
-
-        /* Beautiful Purple Scrollbar */
-        .ck-editor__main::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        .ck-editor__main::-webkit-scrollbar-track {
-          background: #dac9f0;
-          border-radius: 10px;
-        }
-
-        .ck-editor__main::-webkit-scrollbar-thumb {
-          background: linear-gradient(135deg, #6f32bb 0%, #8043cc 100%);
-          border-radius: 10px;
-          box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.3);
-        }
-
-        .ck-editor__main::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(135deg, #5f2ba0 0%, #6f32bb 100%);
-        }
-
-        /* Dropdown panels */
-        .ck-dropdown__panel {
-          border: 2px solid #dac9f0 !important;
-          border-radius: 12px !important;
-          box-shadow: 0 10px 25px rgba(111, 50, 187, 0.15) !important;
-        }
-
-        /* List items in dropdowns */
-        .ck-list__item {
-          border-radius: 6px !important;
-          margin: 2px !important;
-        }
-
-        .ck-list__item:hover {
-          background: #dac9f0 !important;
-        }
-
-        /* Placeholder text styling */
-        .ck-placeholder::before {
-          color: #8043cc !important;
-          font-style: italic !important;
-        }
-
-        /* Table styling */
-        .ck-editor__editable table {
-          border: 2px solid #dac9f0 !important;
-          border-radius: 8px !important;
-        }
-
-        .ck-editor__editable table td,
-        .ck-editor__editable table th {
-          border: 1px solid #b3b9da !important;
-          padding: 0.75rem !important;
-        }
-
-        .ck-editor__editable table th {
-          background: #dac9f0 !important;
-          color: #5f2ba0 !important;
-          font-weight: 600 !important;
-        }
-
-        /* Link styling */
-        .ck-editor__editable a {
-          color: #6f32bb !important;
-          text-decoration: underline !important;
-        }
-
-        /* Blockquote styling */
-        .ck-editor__editable blockquote {
-          border-left: 4px solid #8043cc !important;
-          background: #dac9f0 !important;
-          padding: 1rem !important;
-          margin: 1rem 0 !important;
-          border-radius: 0 8px 8px 0 !important;
-          font-style: italic !important;
-        }
-
-        /* Heading styles */
-        .ck-editor__editable h1 {
-          color: #5f2ba0 !important;
-        }
-
-        .ck-editor__editable h2 {
-          color: #6f32bb !important;
-        }
-
-        .ck-editor__editable h3 {
-          color: #8043cc !important;
-        }
-      `}</style>
       <ConfirmModal
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}

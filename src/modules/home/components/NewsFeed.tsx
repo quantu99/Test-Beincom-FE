@@ -370,6 +370,7 @@ function PostItem({ post }: PostItemProps) {
         </div>
 
         <div className="mb-4">
+          <h5 className='text-xl font-semibold mb-2 text-customBlack-1'>{post?.title}</h5>
           <div
             className="article-content-html"
             dangerouslySetInnerHTML={{ __html: post?.content }}
@@ -378,12 +379,12 @@ function PostItem({ post }: PostItemProps) {
       </div>
 
       {post.image && (
-        <div className="px-4 pb-4 h-[520px]">
+        <div className="px-4 pb-4 h-[520px] w-full">
           <Img
             src={post.image}
             alt={post.title || 'post image'}
-            className="w-auto h-full rounded-lg"
-            fit="cover"
+            className="w-full h-full rounded-lg"
+            fit="contain"
           />
         </div>
       )}

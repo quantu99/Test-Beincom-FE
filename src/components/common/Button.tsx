@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 
 type ButtonProps = {
@@ -12,7 +12,7 @@ type ButtonProps = {
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   style?: React.CSSProperties;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function Button({
   children,
@@ -25,6 +25,7 @@ export function Button({
   className = '',
   type = 'button',
   style,
+  ...rest
 }: ButtonProps) {
   const baseStyles =
     'inline-flex items-center justify-center gap-2 rounded-2xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
@@ -64,6 +65,7 @@ export function Button({
       disabled={disabled || loading}
       className={`${baseStyles} ${variantStyles} ${sizeStyles} ${fontStyles} ${disabledStyles} ${className}`}
       style={style}
+      {...rest}
     >
       {loading && (
         <div className="size-5 animate-spin rounded-full border-2 border-white border-r-transparent"></div>
